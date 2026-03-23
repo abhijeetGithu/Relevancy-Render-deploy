@@ -1,0 +1,168 @@
+if normalized == "special_char":
+                prompt_template = (
+                    "You are a search relevance expert. Generate a query that includes special-character tokens "
+                    " but only if they are explicitly present in the Title or Description.\n\n"
+                    "Rules:\n"
+                    "- First, scan the Title and Description for tokens containing special characters (e.g., CVE IDs, version numbers, error codes, standards like SOC2).\n"
+                    "- If multiple special-character tokens exist, choose the one that appears most frequently or is most prominent in the text.\n"
+                    "- Ensure the final query string contains the chosen special-character token explicitly.\n"
+                    "- Always preserve the exact formatting of the token (e.g., 'cve-2025-0309', 'rbac v3', 'enable-tls13-early-data').\n"
+                    "- Keep the query concise and natural, like what developers type when searching for CVEs, error codes, or version-specific issues.\n"
+                    "- Do not output code snippets, configuration blocks, or long descriptive phrases.\n"
+                    "- If no special-character tokens exist, generate a clean 2–3 word keyword query from the most relevant terms in the Title and Description, without introducing any artificial special characters.\n\n"
+                    f"Description: {truncated_description}\n\n"
+                    "Return ONLY the query string."
+                )
+            elif normalized == "keyword_based":
+                prompt_template = (
+                    "You are generating short keyword-based search queries from a given document title and description. Follow these rules carefully:\n"
+                    "- The query must be very generic (not detailed or specific).\n"
+                    "- Use 2–3 words only.\n"
+                    "- Prefer common programming terms (for example: java, string, array, error, exception, sql, python, css).\n"
+                    "- You may combine a generic keyword with a relevant word from the document.\n"
+                    "- The query should sometimes include extra noise by adding a generic but related word that beginners might search (e.g., java, error, code, example, class).\n"
+                    "- The query should roughly capture the intent of the document, but stay simple and keyword-oriented.\n\n"
+                    f"Title: {title}\n"
+                    f"Description: {truncated_description}\n\n"
+                    "Return ONLY the query string."
+                )
+            elif normalized == "hard":
+                prompt_template = (
+                    "You are a search relevance expert. Generate a HARD-level semantic search query that a user would type to find the given document.\n\n"
+                    "HARD PROMPT RULES:\n"
+                    "- Construct a query with 2–3 broad, common keywords.\n"
+                    "- Focus only on the main technology, tool, or error category from the title or description.\n"
+                    "- Do not include detailed jargon, version numbers, or specific methods.\n"
+                    "- The query should feel like a beginner exploring or identifying the general problem for the first time.\n"
+                    "- The query should somewhat match the document's overall intent and meaning (semantic relevance).\n"
+                    "- Ensure the query reflects the document semantically, not just by copying exact words.\n\n"
+                    f"Title: {title}\n"
+                    f"Description: {truncated_description}\n\n"
+                    "Return ONLY the query string."
+                )
+            elif normalized == "medium":
+                prompt_template = (
+                    "You are a search relevance expert. Generate a MEDIUM-level search query that a user would type to find the given document.\n\n"
+                    "MEDIUM PROMPT RULES:\n"
+                    "- Construct a query with 4–5 keywords.\n"
+                    "- Combine the general technology/tool with one specific feature, function, or common error mentioned in the title or description.\n"
+                    "- Provide enough detail for troubleshooting or configuration, but keep it less specialized than an expert query.\n"
+                    "- The query should feel like an intermediate developer searching for setup guidance or solving a moderately specific problem.\n\n"
+                    f"Title: {title}\n"
+                    f"Description: {truncated_description}\n\n"
+                    "Return ONLY the query string."
+                )
+            else:  # easy
+                prompt_template = (
+                    "You are a search relevance expert. Generate an EASY-level search query that a user would type to find the given document.\n\n"
+                    "EASY PROMPT RULES:\n"
+                    "- Construct a query with 6 or more keywords.\n"
+                    "- Use the most specific technical terms from the title and description (frameworks, methods, error messages, configurations).\n"
+                    "- Add 1–2 vague/noisy terms that show troubleshooting intent (e.g., not working, issue, problem, fix, why, how to).\n"
+                    "- Do not stack vague terms (maximum 2).\n"
+                    "- Do not invent unrelated technologies, product names, or random jargon not in the title/description.\n"
+                    "- Keep vague terms natural to how developers search (avoid words like 'confusion' or 'confused').\n"
+                    "- The final query should feel like a real expert developer's messy search: highly specific but with a small dose of vague words.\n\n"
+                    f"Title: {title}\n"
+                    f"Description: {truncated_description}\n\n"
+                    "Return ONLY the query string."
+                )
+synonyms prompt --
+
+ prompt_template = (
+                    "You are a search relevance expert. Generate ONE technical search query (3–5 tokens) that combines:\n"
+                    "  - valid abbreviation (present or strongly implied in the Title or Description)\n"
+                    "  - And a complementary synonym, semantic variant, or related functional/action term.\n\n"
+                    "ABBREVIATION SELECTION RULES:\n"
+                    "- Use ONLY abbreviations whose full concept appears (or is clearly implied) in the Title or Description.\n"
+                    "- Common pairs (use only if the concept is present):\n"
+                    "  database/DB, application programming interface/API, authentication/auth, authorization/authZ, javascript/js,\n"
+                    "  typescript/ts, configuration/config, repository/repo, statistics/stats, documentation/docs, information/info,\n"
+                    "  performance/perf, initialization/init, development/dev, production/prod, administrator/admin, synchronize/sync,\n"
+                    "  specification/spec, message queue/mq, websocket/ws, machine learning/ml, artificial intelligence/ai,\n"
+                    "  operating system/os, version/vers, parameter/param, application/app\n"
+                    "- Upper‑case only standard all‑caps ones (API, HTTP, SQL, DB). Lower‑case others (repo, config, auth).\n"
+                    "- Do NOT invent or hallucinate abbreviations not supported by the document content.\n\n"
+                    "COMBINATION RULES:\n"
+                    "- Form either:\n"
+                    "  (a) abbreviation + semantic/action/qualifier term  (e.g., 'api auth', 'db migration', 'repo sync', 'config reload') OR\n"
+                    "  (b) full term + its abbreviation if natural and concise (e.g., 'rest api', 'database db' is NOT natural → avoid)\n"
+                    "- Prefer pattern (a) unless (b) is a widely standard expression (e.g., 'rest api', 'http api').\n"
+                    "- Do NOT duplicate meaning redundantly (avoid 'api api', 'db database', 'auth authentication').\n"
+                    "- Avoid filler words (the, a, an, in, of, to) and avoid long phrases.\n"
+                    "- No version numbers unless absolutely central.\n"
+                    "- 3–5 tokens total. No punctuation except hyphens already part of a token.\n\n"
+                    "QUALITY EXAMPLES (valid if concepts appear in doc):\n"
+                    "  api auth\n"
+                    "  rest api\n"
+                    "  db migration\n"
+                    "  repo sync\n"
+                    "  config reload\n"
+                    "  js bundler\n"
+                    "  ml pipeline\n"
+                    "  http latency\n"
+                    "  auth token refresh\n"
+                    "COUNTER-EXAMPLES (reject these patterns):\n"
+                    "  api api              (duplicate)\n"
+                    "  database db          (redundant repetition)\n"
+                    "  api authentication   (use 'api auth')\n"
+                    "  repository           (needs combo)\n"
+                    "  api detailed guide   (filler / vague)\n\n"
+                    "SELECTION PRIORITY IF MULTIPLE OPTIONS:\n"
+                    "1. Choose the abbreviation whose concept is most central (frequency + title presence + thematic focus).\n"
+                    "2. Pair it with the strongest task / error / feature / action term.\n"
+                    "3. If no strong action term, use the most meaningful noun modifier (e.g., 'api gateway').\n\n"
+                    f"Title: {title}\n"
+                    f"Description: {truncated_description}\n\n"
+                    "Return ONLY the final query string (no quotes, no trailing punctuation)."
+                )
+                
+
+
+
+java
+rdbms
+sql
+mysql
+html
+ios
+android
+python
+reactjs
+angularjs
+selenium
+selenium-webdriver
+android-studio
+python-3.x
+openai-api
+angular
+flutter
+typescript
+javascript-objects
+prompt
+llm-sql-generation
+mcps
+mcpl
+user-agent
+google-chrome
+webdriver
+css
+elasticsearch
+google-analytics
+amazon-ecs
+aws-lambda
+aws-cloudformation
+aws-api-gateway
+aws-step-functions
+oracle-database
+stack
+fullcalendar
+mongodb
+postgresql
+django-postgresql
+amazon-redshift
+amazon-s3
+waf
+azure-devops
+azure
+

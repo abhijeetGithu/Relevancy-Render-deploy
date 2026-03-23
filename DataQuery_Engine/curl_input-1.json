@@ -1,0 +1,63 @@
+{
+  "url": "https://dryrun-prod-verizon.searchunify.com/search/searchResultByPost",
+  "method": "POST",
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Cache-Control": "no-cache",
+    "Connection": "keep-alive",
+    "Content-Type": "application/json",
+    "Cookie": "_hjSessionUser_3642566=eyJpZCI6IjA1YTgzMTk3LTllOTUtNTg4Ny1hOGNlLTcxNDM3OTVmYzQ2MSIsImNyZWF0ZWQiOjE3MjYxNDU1NDM2NTgsImV4aXN0aW5nIjp0cnVlfQ==; _BEAMER_USER_ID_lkzznLbv42817=f8b7d971-8fd8-4e77-8717-61610a1a5375; _BEAMER_FIRST_VISIT_lkzznLbv42817=2024-12-19T13:46:48.772Z; _BEAMER_LAST_POST_SHOWN_lkzznLbv42817=null; _BEAMER_BOOSTED_ANNOUNCEMENT_DATE_lkzznLbv42817=2025-01-09T16:00:09.521Z; _BEAMER_DATE_lkzznLbv42817=2025-01-24T07:56:26.030Z; cf_clearance=g2IpTXJxeCV8DgwJpYryGCAwzy1bijQ9aJL_yeEJuFo-1738062670-1.2.1.1-ejCb02TgL2Lz.2QSTwwitXlpxrMw4eFkcHnrEeDr6gWU6rfjgoPZGQdk5LmVmQ1wvHp8FOoBbIOwR8hFZTI8gABf1DGyhBfr4gw8gYHsnsltk4qMulEF.ca99j828sFx2mQW_oYHgOz8TYDWLhYRXcKjXD6HVHLAM3aO7_fY.HlgeJmSjbvnZ8IhL5p0VZ9Lt3aGVvfOn4M89MIp13EPYuf3lKwcQ4GXxLfEd6s7E1R55OMtXn54OgQwjQxZFJy4S58RNEAAKvsnBJkwLDDB4wAMgAx8xaQz8CpKw1fXd1m3LFDIRvIhwdD1XQuTa0Qw3o9VmQNvqJwh4SNAouohig; _BEAMER_LAST_UPDATE_lkzznLbv42817=1739199503275; _vwo_uuid_v2=D9A296254AB885796E0F0C55C7227EE67|298cfe8016961bf4392004bfcf87b56e; fpestid=bPNb6bNuFG5TPmGUufUerfHoU8QB2bp_7lY-gND_372uA1PjSIM3SFvlwyJgKZuXOjSeAg; _mkto_trk=id:690-NGB-767&token:_mch-searchunify.com-ed3c0b54aa1fc5a8ae6582d826b2964d; searchunify-_zldp=ZSG1Ba1txk6LuTov3lJoJFMa6VZQQXF%2B%2FMFd%2FTIJb0RfHfeRG5ob2aMSDKLjY1GHodoRkLyJC2Y%3D; _gz_taid=1751441363980439; _gcl_au=1.1.1676275357.1753186435; _ga_313858091=GS2.1.s1753362553$o15$g0$t1753362553$j60$l0$h0; _cc_id=f7f919f7be957394e63597f208eade90; _ga_EBE78CTJCM=GS2.1.s1753707544$o39$g1$t1753708020$j60$l0$h0; _ga_GT8XT3RWNS=GS2.1.s1753793767$o51$g0$t1753793767$j60$l0$h0; _mkto_utmsource=https%20%20%20pages%20searchunify%20com; _mkto_newrecententrypoint=https%20%20%20pages%20searchunify%20com%7Esearchunify; _mkto_datetime=1755621885133; _ga=GA1.1.250926362.1744368559; _ga_256C0CT88Z=GS2.1.s1755621891$o6$g0$t1755621891$j60$l0$h0; _ga_STDRXBQS38=GS2.1.s1755621891$o44$g0$t1755621891$j60$l0$h0; _clck=1g1kidg%5E2%5Efyl%5E0%5E1938; _ga_L1SKKP71NY=GS2.1.s1755621892$o5$g0$t1755621896$j56$l0$h0; _csrf=49CLlJKm-bzz4s14hDO-s8_jUemU1uZGTB-s; io=RaAM3c8jeJk5Lp0lAAAA; connect.admin_sid=s:6C5YAOIAlV197i_Kxgy8evnlOfDMZ4cM.VKiUmw5WdXHypYGsLyK05dbhe0z6RmAyNQAx0MxKmhY; _gz_sid=1755769176701208; connect.analytics_sid=s%3AqiDb-a2ev34pG8q3XFB-A_EZ1Pj8DMaA.KU4ImSfdciZWOzGgPYUlfpntCD0bahwwrwz4PHPTR%2F8; smartFacets=false",
+    "Origin": "https://dryrun-prod-verizon.searchunify.com",
+    "Pragma": "no-cache",
+    "Referer": "https://dryrun-prod-verizon.searchunify.com/resources/search_clients_custom/bf52bc39-4077-11f0-b7b2-0242ac120015/download/index.html?searchString=&activeType=1_5_verizon_support_home&from=0&sortby=_score&orderBy=desc&pageNo=1&aggregations=%5B%7B%22type%22%3A%22_index%22%2C%22filter%22%3A%5B%221_5_verizon_support_home%22%5D%7D%5D&uid=bf52bc39-4077-11f0-b7b2-0242ac120015&resultsPerPage=10&exactPhrase=&withOneOrMore=&withoutTheWords=&pageSize=10&language=en&suCaseCreate=false",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-origin",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+    "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\""
+  },
+  "body": {
+    "langAttr": "en",
+    "react": 1,
+    "isRecommendationsWidget": false,
+    "searchString": "",
+    "from": 0,
+    "sortby": "_score",
+    "orderBy": "desc",
+    "pageNo": 1,
+    "aggregations": [
+      {
+        "type": "_type",
+        "filter": [
+          "forum"
+        ]
+      }
+    ],
+    "clonedAggregations": [],
+    "uid": "bf52bc39-4077-11f0-b7b2-0242ac120015",
+    "resultsPerPage": 10,
+    "exactPhrase": "",
+    "withOneOrMore": "",
+    "withoutTheWords": "",
+    "pageSize": "10",
+    "sid": "1751441363980439",
+    "language": "en",
+    "mergeSources": false,
+    "versionResults": false,
+    "suCaseCreate": false,
+    "visitedtitle": "",
+    "paginationClicked": false,
+    "email": "",
+    "accessToken": "9ad5ad4164aea64521fd3c00a19b76c8",
+    "getAutoTunedResult": true,
+    "getSimilarSearches": true,
+    "smartFacets": false,
+    "showMoreSummary": false,
+    "minSummaryLength": 100,
+    "showContentTag": true,
+    "pagingAggregation": []
+  }
+}

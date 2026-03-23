@@ -1,0 +1,13 @@
+Title,Document_URL,Generated_Query,score,attempts,met_threshold
+Why am I not receiving a one-time passcode for Alteryx One,https://knowledge.alteryx.com/index/s/article/why-am-i-not-receiving-a-one-time-passcode-for-alteryx-one,Alteryx One one-time passcode not received troubleshooting,5,1,True
+Alteryx for Excel Users How to do a VLOOKUP in Alteryx,https://knowledge.alteryx.com/index/s/article/Alteryx-for-Excel-Users-How-to-do-a-VLOOKUP-in-Alteryx-1583460632739,Alteryx VLOOKUP function Excel users guide,5,1,True
+Re Challenge 259 Disenvowel,https://community.alteryx.com/t5/Weekly-Challenges/Challenge-259-Disenvowel/m-p/1428245#M153932,disenvowel solution Challenge 259 troubleshooting guide,5,1,True
+Re Cloud Quest 50 Postal Code Madness,https://community.alteryx.com/t5/Cloud-Quests/Cloud-Quest-50-Postal-Code-Madness/m-p/1428243#M1356,Cloud Quest postal code issue highlight feature,4,1,True
+Re Challenge 499 Where is Waldo,https://community.alteryx.com/t5/Weekly-Challenges/Challenge-499-Where-is-Waldo/m-p/1428234#M153931,Challenge 499 Waldo solution spoiler highlight,5,1,True
+Re Creating a new folder using text boxes and action tools,https://community.alteryx.com/t5/Alteryx-Designer-Desktop-Discussions/Creating-a-new-folder-using-text-boxes-and-action-tools/m-p/1428223#M353121,Alteryx CMD tool write access folder issue,5,1,True
+Re Cannot Download Alteryx,https://community.alteryx.com/t5/Alteryx-Designer-Desktop-Discussions/Cannot-Download-Alteryx/m-p/1428221#M353120,Alteryx trial download business email issue,5,1,True
+IBM DB2,https://help.alteryx.com/current/en/designer/data-sources/ibm-db2.html,IBM DB2 ODBC OLEDB 64-bit driver connection setup,5,1,True
+Amazon Redshift,https://help.alteryx.com/current/en/designer/data-sources/amazon-redshift.html,Amazon Redshift ODBC connection setup read write issues,4,1,True
+User Roles and Permissions,https://help.alteryx.com/current/en/server/administer-alteryx-server/user-and-group-management/user-roles-and-permissions.html,Curators Server user roles permissions setup,5,1,True
+SQL DB Advanced Connection Strings,https://help.alteryx.com/current/en/server/configure/database-management/sql-db-management/sql-db-advanced-connection-strings.html,SQL connection string configuration advanced settings,4,1,True
+Mongo to SQL Migration Guide,https://help.alteryx.com/current/en/server/configure/database-management/sql-db-management/mongo-to-sql-migration-guide.html,MongoDB SQL migration setup guide errors,4,1,True

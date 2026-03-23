@@ -1,0 +1,43 @@
+{
+  "url": "https://production1.searchunify.ai/search/searchResultByPost",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "langAttr": "en",
+    "react": 1,
+    "isRecommendationsWidget": false,
+    "searchString": "hello",
+    "from": 0,
+    "sortby": "_score",
+    "orderBy": "desc",
+    "pageNo": 1,
+    "aggregations": [],
+    "clonedAggregations": [],
+    "uid": "98e9eaef-c3f4-11ee-bd6b-3e3f7c426c8e",
+    "resultsPerPage": 10,
+    "exactPhrase": "",
+    "withOneOrMore": "",
+    "withoutTheWords": "",
+    "pageSize": 10,
+    "sid": "1764577314092836",
+    "language": "en",
+    "mergeSources": true,
+    "versionResults": true,
+    "suCaseCreate": false,
+    "visitedtitle": "",
+    "paginationClicked": false,
+    "email": "",
+    "storeContext": true,
+    "searchUid": "cafd9045-6910-48e8-930a-4a553ae1f55c",
+    "accessToken": "c291e32a7115f763e9508e2c5755dacd",
+    "getAutoTunedResult": true,
+    "getSimilarSearches": true,
+    "smartFacets": true,
+    "showMoreSummary": false,
+    "minSummaryLength": 100,
+    "showContentTag": true,
+    "pagingAggregation": []
+  }
+}

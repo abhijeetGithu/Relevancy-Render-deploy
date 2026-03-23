@@ -1,0 +1,51 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+.venv/
+venv/
+env/
+.env
+.env.*
+.env.example
+.git/
+.github/
+relevancy_system.egg-info/
+dist/
+build/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Tests
+tests/
+*.test.py
+*_test.py
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Development files
+requirements-dev.txt
+Makefile
+docker-compose.override.yml
+
+# Community pages examples (not needed in production)
+community-pages/
+
+# Scripts
+scripts/
+
+# Misc
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp

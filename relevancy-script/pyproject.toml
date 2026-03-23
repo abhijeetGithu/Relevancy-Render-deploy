@@ -1,0 +1,15 @@
+[project]
+name = "relevancy-system"
+version = "0.1.0"
+description = "Document analysis UI (Step 1: frontend) served by FastAPI"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.27",
+  "jinja2>=3.1",
+  "httpx>=0.27",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+

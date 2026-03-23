@@ -1,0 +1,16 @@
+curl 'https://community.alteryx.com/plugins/custom/alteryx/alteryx/searchUnify_Endpoint' \
+  -H 'accept: */*' \
+  -H 'accept-language: en-GB,en-US;q=0.9,en;q=0.8' \
+  -H 'content-type: application/x-www-form-urlencoded; charset=UTF-8' \
+  -b '_gz_taid=1762238413931049; _mkto_trk=id:775-BPN-022&token:_mch-alteryx.com-cecd9dc124bf29c2b3223acee97de92b; _ga=GA1.1.922288284.1762238420; CookieConsent={stamp:%27O+8zLz7RGHIKgpXROgQugqPfzgstDn6adbHp7rfBKo1/fifuNE32Ig==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:1762238418932%2Cregion:%27in%27}; amp_API_KE=dpYFUTlO8AG1fZV-QKKfae...1jbf33fd3.1jbf33jio.8.0.8; _ga_SV8R786745=GS2.1.s1765955101$o11$g1$t1765955353$j60$l0$h0; _gz_sid=1767165852595970; VISITOR_BEACON=~29qvYVSeQbq08dmXK~9S8fyXQim12Ct7J3SYvWP1GT04wa2huefTQJBK3-jVSh70iUz3yZ-uUPcQw1bjgUrccUnrOLwi0LeSId1fFyjg..; _ga_NK25799R73=GS2.1.s1767165856$o16$g1$t1767165909$j7$l0$h0; smartFacets=false; LithiumVisitor=~2GLfGYCMaiJeeI2ny~HSahBeLw0Qztr2G2iukfS0j6u9Jq0SlgUvAIpMOqa7D0wrMBPVswu4lkJEyVCD2xZdrmmrC3m3aRpBL9rumTXg..; AWSALB=g1gWVqgT1LOG6ySN9TAnIBIiX2S0PDOfJanyT9CMSf0eVmirerVR1DQS8cX3K414d63je97TfBD4BHmnOhgFjhxtbZntTSCwNBmC+OeH2HAEn7tZ5OMMllv0vJ6m; AWSALBCORS=g1gWVqgT1LOG6ySN9TAnIBIiX2S0PDOfJanyT9CMSf0eVmirerVR1DQS8cX3K414d63je97TfBD4BHmnOhgFjhxtbZntTSCwNBmC+OeH2HAEn7tZ5OMMllv0vJ6m; LiSESSIONID=2824D117C35FBCEAED9B7F141E4A1538' \
+  -H 'origin: https://community.alteryx.com' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://community.alteryx.com/t5/forums/searchpage/tab/message/search?searchString=&activeType=all&from=0&sortby=post_time&orderBy=desc&pageNo=1&aggregations=%5B%5D&uid=a7f8ff43-b37c-11e9-ad2e-06908fe445c6&resultsPerPage=10&exactPhrase=&withOneOrMore=&withoutTheWords=&pageSize=10&language=en&suCaseCreate=false' \
+  -H 'sec-ch-ua: "Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Linux"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36' \
+  --data-raw 'langAttr=&react=1&isRecommendationsWidget=false&searchString=&from=0&sortby=post_time&orderBy=desc&pageNo=1&aggregations=%5B%7B%22type%22%3A%22rootCategoryId%22%2C%22filter%22%3A%5B%22external%22%5D%7D%5D&clonedAggregations=&category=external&uid=a7f8ff43-b37c-11e9-ad2e-06908fe445c6&resultsPerPage=10&exactPhrase=&withOneOrMore=&withoutTheWords=&isWildCard=false&pageSize=10&sid=1762238413931049&language=en&mergeSources=true&versionResults=true&suCaseCreate=false&visitedtitle=&paginationClicked=false&email=&getAutoTunedResult=true&getSimilarSearches=true&smartFacets=false&showMoreSummary=false&minSummaryLength=100&showContentTag=true&pagingAggregation=%5B%5D'

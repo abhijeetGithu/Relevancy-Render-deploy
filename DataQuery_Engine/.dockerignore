@@ -1,0 +1,50 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv
+venv/
+ENV/
+env/
+.eggs/
+*.egg-info/
+*.egg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Environment files (will be mounted or passed separately)
+.env
+.env.*
+!.env.example
+
+# Test and docs
+tests/
+docs/
+*.md
+!README.md
+
+# Temp and cache
+.temp_downloads/
+*.log
+*.csv
+*.xlsx
+query_outputs/
+
+# OS
+.DS_Store
+Thumbs.db

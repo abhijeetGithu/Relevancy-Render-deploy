@@ -1,0 +1,42 @@
+{
+  "url": "https://searchunify-s.cornerstoneondemand.com/search/SUSearchResults",
+  "method": "POST",
+  "headers": {
+    "Accept": "application/json",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Authorization": "bearer ewogICJhbGciIDogIkhTMjU2IiwKICAidHlwIiA6ICJKV1QiCn0.RWAyE-Ooh6KPHYH4SCVP0K4ziR1ngA_Ryg1J9kv1HeOTMEePKC3uXEXsElmJLgF5Vd0nYV2J7JB_3r8VxMgwNcDvu_FBCNgPwVQet9ifld506gtfcAW03RQlHBtx_foH8DvlN5cib-zLVc9hgD-NQTLALkAo_9fA1KM2_XQNthDuJoVO6GwzVAmkhultSIiAfSDyQVNw5FZAj1nkk9Vha-4vPGe6cv_W8XEgjsavVJiFBhwJgp9uAO9YPd2_nzZNm-rpd8kP3166BF7Mqg6ieQ.kglKgDRI6eIUFBCrlOlNEStNnVpsUwcPnAACoL9T78g",
+    "Connection": "keep-alive",
+    "Content-Type": "application/json",
+    "Cookie": "connect.analytics_sid=s%3AmdXg4c_1a-OdJAcGIcvXdqdAkz45cBjB.iArWvpYly24lY8GYQOT4eqw5MxWjEP4McilzsHh%2B6HU",
+    "Origin": "https://cornerstoneondemand--uat.sandbox.lightning.force.com",
+    "Referer": "https://cornerstoneondemand--uat.sandbox.lightning.force.com/",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "cross-site",
+    "Sec-Fetch-Storage-Access": "active",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+    "X-Location-Href": "https://cornerstoneondemand--uat.sandbox.lightning.force.com/lightning/r/Case/5008Z00002ByfAEQAZ/view",
+    "sec-ch-ua": "\"Chromium\";v=\"140\", \"Not=A?Brand\";v=\"24\", \"Google Chrome\";v=\"140\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\""
+  },
+  "body": {
+    "searchString": "data",
+    "from": 0,
+    "pageNum": 1,
+    "sortby": "_score",
+    "orderBy": "desc",
+    "resultsPerPage": 10,
+    "aggregations": [],
+    "referrer": "https://cornerstoneondemand--uat.sandbox.file.force.com/",
+    "exactPhrase": "",
+    "withOneOrMore": "",
+    "withoutTheWords": "",
+    "recommendResult": "",
+    "indexEnabled": false,
+    "sid": "1759814058858203",
+    "language": "en",
+    "autocomplete": true,
+    "uid": "e2cb4816-f276-11ea-95d1-0242ac12000f"
+  }
+}

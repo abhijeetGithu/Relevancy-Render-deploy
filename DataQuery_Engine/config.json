@@ -1,0 +1,15 @@
+{
+  "REGENERATE_QUERIES": "yes",
+  "APPEND_TO_CSV": false,
+  "MULTI_SOURCE_CONFIG": {
+    "all_content": {
+      "document_count": 5,
+      "url_field": "href",
+      "title_field": "TitleToDisplay",
+      "description_field": "SummaryToDisplay",
+      "title_highlight_field": "TitleToDisplay",
+      "description_highlight_field": "SummaryToDisplay",
+      "aggregations": []
+    }
+  }
+}

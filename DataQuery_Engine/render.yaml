@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: dataquery-engine
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 5050
+      - key: GUNICORN_WORKERS
+        value: 1
+      - key: GUNICORN_TIMEOUT
+        value: 1200
+      - key: FLASK_DEBUG
+        value: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false

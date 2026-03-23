@@ -1,0 +1,39 @@
+services:
+  relevancy-evaluator:
+    container_name: relevancy-evaluator
+    image: "${IMAGE}"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - shared_network
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY:-2G}
+    ports:
+      - "${EXPOSED_PORT:-5050}:5050"
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - GUNICORN_WORKERS=${GUNICORN_WORKERS:-2}
+      - GUNICORN_TIMEOUT=${GUNICORN_TIMEOUT:-1200}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5050/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    command: >
+      gunicorn 
+      --bind 0.0.0.0:5050 
+      --workers=${GUNICORN_WORKERS:-2} 
+      --timeout=${GUNICORN_TIMEOUT:-1200}
+      --access-logfile -
+      --error-logfile -
+      server:app
+
+networks:
+  shared_network:
+    external: true

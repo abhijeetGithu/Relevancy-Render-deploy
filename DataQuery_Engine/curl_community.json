@@ -1,0 +1,71 @@
+{
+  "url": "https://community.alteryx.com/plugins/custom/alteryx/alteryx/searchUnify_Endpoint",
+  "headers": {
+    "accept": "*/*",
+    "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "origin": "https://community.alteryx.com",
+    "priority": "u=1, i",
+    "referer": "https://community.alteryx.com/t5/forums/searchpage/tab/message/search?searchString=&activeType=alteryx_prod_help_documentation&from=0&sortby=post_time&orderBy=desc&pageNo=1&aggregations=%5B%7B%22type%22%3A%22_index%22%2C%22filter%22%3A%5B%22alteryx_prod_help_documentation%22%5D%7D%5D&uid=a7f8ff43-b37c-11e9-ad2e-06908fe445c6&resultsPerPage=10&exactPhrase=&withOneOrMore=&withoutTheWords=&pageSize=10&language=en&suCaseCreate=false",
+    "sec-ch-ua": "",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
+  },
+  "body": {
+    "langAttr": "",
+    "react": 1,
+    "isRecommendationsWidget": false,
+    "searchString": "",
+    "from": 0,
+    "sortby": "post_time",
+    "orderBy": "desc",
+    "pageNo": 1,
+    "aggregations": [
+      {
+        "type": "_index",
+        "filter": [
+          "alteryx_prod_help_documentation"
+        ]
+      },
+      {
+        "type": "rootCategoryId",
+        "filter": [
+          "external"
+        ]
+      }
+    ],
+    "clonedAggregations": "",
+    "category": "external",
+    "uid": "a7f8ff43-b37c-11e9-ad2e-06908fe445c6",
+    "resultsPerPage": 10,
+    "exactPhrase": "",
+    "withOneOrMore": "",
+    "withoutTheWords": "",
+    "isWildCard": false,
+    "pageSize": 10,
+    "sid": 1762238413931049,
+    "language": "en",
+    "mergeSources": false,
+    "versionResults": false,
+    "suCaseCreate": false,
+    "visitedtitle": "",
+    "paginationClicked": false,
+    "email": "",
+    "getAutoTunedResult": true,
+    "getSimilarSearches": true,
+    "smartFacets": false,
+    "showMoreSummary": false,
+    "minSummaryLength": 100,
+    "showContentTag": true,
+    "pagingAggregation": []
+  },
+  "config": {
+    "source_name": "Community",
+    "documents_per_page": 10,
+    "max_pages": 1
+  }
+}

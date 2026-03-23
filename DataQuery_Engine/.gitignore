@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+.eggs/
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Environment files (secrets)
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.cursor/
+
+# Temp and cache
+.temp_downloads/
+*.log
+
+# Generated outputs and data files (large files, not needed in repo)
+*.csv
+*.xlsx
+query_outputs/
+!query_outputs/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db

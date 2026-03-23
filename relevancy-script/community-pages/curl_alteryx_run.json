@@ -1,0 +1,67 @@
+{
+  "url": "https://community.alteryx.com/plugins/custom/alteryx/alteryx/searchUnify_Endpoint",
+  "method": "POST",
+  "headers": {
+    "accept": "*/*",
+    "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "origin": "https://community.alteryx.com",
+    "priority": "u=1, i",
+    "referer": "https://community.alteryx.com/t5/forums/searchpage/tab/message/search?searchString=&activeType=all&from=0&sortby=post_time&orderBy=desc&pageNo=1&aggregations=%5B%5D&uid=a7f8ff43-b37c-11e9-ad2e-06908fe445c6&resultsPerPage=10&exactPhrase=&withOneOrMore=&withoutTheWords=&pageSize=10&language=en&suCaseCreate=false",
+    "sec-ch-ua": "",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+    "Cookie": "_gz_taid=1762238413931049; _mkto_trk=id:775-BPN-022&token:_mch-alteryx.com-cecd9dc124bf29c2b3223acee97de92b; _ga=GA1.1.922288284.1762238420; CookieConsent={stamp:%27O+8zLz7RGHIKgpXROgQugqPfzgstDn6adbHp7rfBKo1/fifuNE32Ig==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:1762238418932%2Cregion:%27in%27}; amp_API_KE=dpYFUTlO8AG1fZV-QKKfae...1jbf33fd3.1jbf33jio.8.0.8; _ga_SV8R786745=GS2.1.s1765955101$o11$g1$t1765955353$j60$l0$h0; _gz_sid=1768191751435620; smartFacets=false; LiSESSIONID=3527DDB6282E12B7D22F217D04BCB4DA; VISITOR_BEACON=~2vYsJtEtfhbxfmQNM~3BplHRV7WzoT8ZRiQND8OFKeww1o2l7YH2q1gMKTA6D03MF8lJ9KXdmIkpBFDROQPwLiUBYsRPYrGc2dw8RfkQ..; _ga_NK25799R73=GS2.1.s1768191753$o21$g1$t1768194075$j55$l0$h0; AWSALB=qDk19xnoyY1ZmnYqN6P7b7MOFH12MVVsK/ycFOBkmPLeY+jKi8gqdxqXHVG5DohA4y+8/ZWSHJJ8QjxZFtTjCTIxueV0a8k/OOG8qGira93PSzCUS0PJvVJs+ZWX; AWSALBCORS=qDk19xnoyY1ZmnYqN6P7b7MOFH12MVVsK/ycFOBkmPLeY+jKi8gqdxqXHVG5DohA4y+8/ZWSHJJ8QjxZFtTjCTIxueV0a8k/OOG8qGira93PSzCUS0PJvVJs+ZWX; LithiumVisitor=~23m4eEkaTxaFIceTK~WhVFrqQlSw89ADJPp5GG5HcbjTo8J8PBa0DGmh0AKuGU_5E1fW44ZcNZUwY46eqBkLr14m4vsr6nPOieTusf0w.."
+  },
+  "body": {
+    "langAttr": "",
+    "react": "1",
+    "isRecommendationsWidget": false,
+    "searchString": "",
+    "from": 0,
+    "sortby": "_score",
+    "orderBy": "desc",
+    "pageNo": 1,
+    "aggregations": [
+      {
+        "type": "rootCategoryId",
+        "filter": [
+          "external"
+        ]
+      }
+    ],
+    "clonedAggregations": "",
+    "category": "external",
+    "uid": "a7f8ff43-b37c-11e9-ad2e-06908fe445c6",
+    "resultsPerPage": 10,
+    "exactPhrase": "",
+    "withOneOrMore": "",
+    "withoutTheWords": "",
+    "isWildCard": false,
+    "pageSize": 10,
+    "sid": "1762238413931049",
+    "language": "en",
+    "mergeSources": true,
+    "versionResults": true,
+    "suCaseCreate": false,
+    "visitedtitle": "",
+    "paginationClicked": false,
+    "email": "",
+    "getAutoTunedResult": true,
+    "getSimilarSearches": true,
+    "smartFacets": false,
+    "showMoreSummary": false,
+    "minSummaryLength": 100,
+    "showContentTag": true,
+    "pagingAggregation": []
+  },
+  "config": {
+    "source_name": "Alteryx docs (run)",
+    "documents_per_page": 1,
+    "max_pages": 10
+  }
+}

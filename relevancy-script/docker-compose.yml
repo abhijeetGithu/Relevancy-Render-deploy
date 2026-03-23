@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  relevancy-system:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: relevancy-system:latest
+    container_name: relevancy-system
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    environment:
+      - APP_ENV=${APP_ENV:-production}
+      - APP_HOST=0.0.0.0
+      - APP_PORT=8000
+      - APP_WORKERS=${APP_WORKERS:-4}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

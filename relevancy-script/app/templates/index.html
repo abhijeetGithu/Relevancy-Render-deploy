@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relevancy System</title>
+    <link rel="stylesheet" href="/static/styles.css?v=6" />
+  </head>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="suite-nav">
+      <div class="suite-nav-brand">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        <span>Relevancy System</span>
+      </div>
+      <a href="http://localhost:8000" class="suite-home-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Suite Home
+      </a>
+    </nav>
+
+    <div class="wizard-container">
+      <!-- Progress Bar -->
+      <div class="progress-bar">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-steps">
+          <div class="progress-step active" data-step="0">
+            <div class="step-dot"></div>
+            <span>Welcome</span>
+          </div>
+          <div class="progress-step" data-step="1">
+            <div class="step-dot"></div>
+            <span>Page Type</span>
+          </div>
+          <div class="progress-step" data-step="2">
+            <div class="step-dot"></div>
+            <span>API Setup</span>
+          </div>
+          <div class="progress-step" data-step="3">
+            <div class="step-dot"></div>
+            <span>Analysis</span>
+          </div>
+          <div class="progress-step" data-step="4">
+            <div class="step-dot"></div>
+            <span>Upload</span>
+          </div>
+          <div class="progress-step" data-step="5">
+            <div class="step-dot"></div>
+            <span>Configure</span>
+          </div>
+          <div class="progress-step" data-step="6">
+            <div class="step-dot"></div>
+            <span>Results</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wizard Content -->
+      <div class="wizard-content">
+        
+        <!-- Step 0: Welcome -->
+        <div class="wizard-step active" id="wizardStep0">
+          <div class="step-content center-content">
+            <div class="welcome-icon">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+                <path d="M11 8v6"></path>
+                <path d="M8 11h6"></path>
+              </svg>
+            </div>
+            <h1>Relevancy System</h1>
+            <p class="welcome-subtitle">Search ranking analysis tool</p>
+            <div class="welcome-features">
+              <div class="feature">
+                <span class="feature-icon">1</span>
+                <span>Paste your API cURL command</span>
+              </div>
+              <div class="feature">
+                <span class="feature-icon">2</span>
+                <span>Upload queries (CSV/Excel)</span>
+              </div>
+              <div class="feature">
+                <span class="feature-icon">3</span>
+                <span>Get ranking analysis report</span>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-large" id="startBtn">
+              Get Started
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 1: Page Type Selection -->
+        <div class="wizard-step" id="wizardStep1">
+          <div class="step-content">
+            <h2>Select Page Type</h2>
+            <p class="step-subtitle">Choose the type of search API you're analyzing</p>
+            
+            <div class="choice-cards">
+              <div class="choice-card" id="choiceNormal">
+                <div class="choice-icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <path d="M9 9h6M9 13h6M9 17h4"/>
+                  </svg>
+                </div>
+                <h3>Normal Page</h3>
+                <p>JSON request body format</p>
+              </div>
+              <div class="choice-card" id="choiceCommunity">
+                <div class="choice-icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                </div>
+                <h3>Community Page</h3>
+                <p>Form-encoded format (SearchUnify)</p>
+              </div>
+            </div>
+
+            <input type="hidden" id="pageType" value="normal" />
+          </div>
+          <div class="step-nav">
+            <button class="btn btn-secondary" id="back1">Back</button>
+            <button class="btn btn-primary" id="next1" disabled>Continue</button>
+          </div>
+        </div>
+
+        <!-- Step 2: cURL Input -->
+        <div class="wizard-step" id="wizardStep2">
+          <div class="step-content">
+            <h2 id="curlStepTitle">Paste cURL Command</h2>
+            <p class="step-subtitle" id="curlStepDesc">Copy the cURL from your browser's developer tools</p>
+            
+            <!-- Normal Page cURL -->
+            <div id="normalCurlSection">
+              <textarea
+                id="curlInput"
+                class="textarea"
+                placeholder="curl 'https://example.com/search' \
+  -H 'content-type: application/json' \
+  --data-raw '{&quot;searchString&quot;:&quot;&quot;, ...}'"
+                rows="10"
+              ></textarea>
+            </div>
+
+            <!-- Community Page cURL -->
+            <div id="communityCurlSection" class="hidden">
+              <textarea
+                id="communityCurlInput"
+                class="textarea"
+                placeholder="curl 'https://community.example.com/search' \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  --data 'searchString=&resultsPerPage=10&...'"
+                rows="10"
+              ></textarea>
+            </div>
+
+            <p class="hint">The searchString field will be replaced with each query from your file.</p>
+          </div>
+          <div class="step-nav">
+            <button class="btn btn-secondary" id="back2">Back</button>
+            <button class="btn btn-primary" id="next2" disabled>Continue</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Analysis Mode -->
+        <div class="wizard-step" id="wizardStep3">
+          <div class="step-content">
+            <h2>Analysis Mode</h2>
+            <p class="step-subtitle">How would you like to analyze your search results?</p>
+            
+            <div class="choice-cards">
+              <div class="choice-card selected" id="choiceWithExpected">
+                <div class="choice-icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                  </svg>
+                </div>
+                <h3>Match Analysis</h3>
+                <p>Compare results against expected titles/URLs</p>
+              </div>
+              <div class="choice-card" id="choiceQueryOnly">
+                <div class="choice-icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                  </svg>
+                </div>
+                <h3>Query Only</h3>
+                <p>Fetch top results without matching</p>
+              </div>
+            </div>
+
+            <input type="hidden" id="analysisMode" value="with_expected" />
+          </div>
+          <div class="step-nav">
+            <button class="btn btn-secondary" id="back3">Back</button>
+            <button class="btn btn-primary" id="next3">Continue</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Upload File -->
+        <div class="wizard-step" id="wizardStep4">
+          <div class="step-content">
+            <h2>Upload Data File</h2>
+            <p class="step-subtitle" id="uploadDesc">Upload a CSV or Excel file with your queries</p>
+            
+            <div class="upload-zone" id="uploadZone">
+              <div class="upload-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+              </div>
+              <p>Drag & drop your file here</p>
+              <span class="upload-or">or</span>
+              <label class="btn btn-secondary upload-btn">
+                Browse Files
+                <input id="csvFile" type="file" accept=".csv,.xlsx,.xlsm,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
+              </label>
+              <p class="upload-formats">Supports CSV (.csv) and Excel (.xlsx, .xlsm, .xls)</p>
+            </div>
+
+            <div id="fileInfo" class="file-info hidden">
+              <div class="file-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                </svg>
+              </div>
+              <div class="file-details">
+                <span class="file-name" id="fileName"></span>
+                <span class="file-meta" id="fileMeta"></span>
+              </div>
+              <button class="btn-icon" id="removeFile" title="Remove file">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="step-nav">
+            <button class="btn btn-secondary" id="back4">Back</button>
+            <button class="btn btn-primary" id="next4" disabled>Continue</button>
+          </div>
+        </div>
+
+        <!-- Step 5: Configure -->
+        <div class="wizard-step" id="wizardStep5">
+          <div class="step-content">
+            <h2 id="configTitle">Configure Columns</h2>
+            <p class="step-subtitle" id="configDesc">Map your file columns to the required fields</p>
+            
+            <div class="config-grid">
+              <div class="config-field">
+                <label class="label">Query Column <span class="required">*</span></label>
+                <select id="queryColumn" class="select"></select>
+              </div>
+
+              <!-- Query-only options -->
+              <div class="config-field hidden" id="topNField">
+                <label class="label">Results per query</label>
+                <select id="topNInput" class="select">
+                  <option value="10" selected>Top 10</option>
+                  <option value="20">Top 20</option>
+                  <option value="30">Top 30</option>
+                  <option value="40">Top 40</option>
+                  <option value="50">Top 50</option>
+                </select>
+              </div>
+
+              <!-- With-expected options -->
+              <div class="config-field" id="matchModeField">
+                <label class="label">Match Mode</label>
+                <select id="matchMode" class="select">
+                  <option value="title_and_url">Title + URL</option>
+                  <option value="title_only">Title only</option>
+                  <option value="url_only">URL only</option>
+                </select>
+              </div>
+
+              <div class="config-field" id="expectedTitleField">
+                <label class="label">Expected Title Column</label>
+                <select id="expectedTitleColumn" class="select"></select>
+              </div>
+
+              <div class="config-field" id="expectedUrlField">
+                <label class="label">Expected URL Column</label>
+                <select id="expectedUrlColumn" class="select"></select>
+              </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="preview-section">
+              <h3>Data Preview</h3>
+              <div class="table-wrap">
+                <table class="table" id="previewTable">
+                  <thead></thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="step-nav">
+            <button class="btn btn-secondary" id="back5">Back</button>
+            <button class="btn btn-primary" id="runAnalysis">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              Run Analysis
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 6: Results -->
+        <div class="wizard-step" id="wizardStep6">
+          <div class="step-content">
+            <h2>Results</h2>
+            
+            <!-- Progress indicator -->
+            <div id="runProgress" class="run-progress">
+              <div class="run-progress-bar">
+                <div class="run-progress-fill" id="runProgressFill"></div>
+              </div>
+              <p id="runStatus" class="run-status">Starting analysis...</p>
+            </div>
+
+            <!-- Log viewer -->
+            <div class="log-viewer" id="logViewer">
+              <div class="log-header">
+                <span class="log-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                  </svg>
+                  Live Logs
+                </span>
+                <span class="log-count" id="logCount">0 entries</span>
+              </div>
+              <div class="log-content" id="logContent"></div>
+            </div>
+
+            <!-- Results section (shown after completion) -->
+            <div id="resultsSection" class="hidden">
+              <div class="results-summary" id="results"></div>
+              
+              <div class="download-section">
+                <a id="downloadCsv" class="btn btn-primary btn-large" href="#" download>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  Download Excel Report
+                </a>
+              </div>
+
+              <!-- LLM Comparator Prompt -->
+              <div id="llmComparatorPrompt" class="llm-prompt hidden">
+                <div class="llm-prompt-header">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                  </svg>
+                  <h3>Continue with LLM Comparison?</h3>
+                </div>
+                <p class="llm-prompt-desc">
+                  Your ranking analysis is complete. Would you like to run an LLM-based comparison to score result quality using GPT or Gemini?
+                </p>
+                <div class="llm-prompt-actions">
+                  <button class="btn btn-primary" id="llmPromptYes">
+                    Yes, Open LLM Comparator
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                  </button>
+                  <button class="btn btn-secondary" id="llmPromptNo">
+                    No, Mark Complete
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div id="validation" class="validation"></div>
+          </div>
+          <div class="step-nav">
+            <button class="btn btn-secondary" id="startOver">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="1 4 1 10 7 10"/>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+              </svg>
+              Start Over
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SheetJS library for Excel parsing -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script src="/static/app.js?v=5" defer></script>
+  </body>
+</html>

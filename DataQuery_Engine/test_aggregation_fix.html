@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Aggregation Parser</title>
+</head>
+<body>
+    <h1>Test Aggregation Parser</h1>
+    <textarea id="testInput" style="width: 500px; height: 100px;">[{type: "_type", filter: ["support_article__kav"]}]</textarea>
+    <br>
+    <button onclick="testParse()">Test Parse</button>
+    <pre id="output"></pre>
+
+    <script>
+        // Helper: Convert JavaScript object notation to valid JSON
+        function sanitizeToJSON(str) {
+            if (!str || !str.trim()) return str;
+            
+            // Replace unquoted keys with quoted keys
+            // Match patterns like: {type: or [{"type: or , type:
+            str = str.replace(/([{,]\s*)([a-zA-Z_][a-zA-Z0-9_]*)\s*:/g, '$1"$2":');
+            
+            // Replace single quotes with double quotes (for string values)
+            // But preserve escaped quotes
+            str = str.replace(/'/g, '"');
+            
+            return str;
+        }
+
+        function testParse() {
+            const input = document.getElementById('testInput').value;
+            const output = document.getElementById('output');
+            
+            try {
+                output.textContent = "Original:\n" + input + "\n\n";
+                
+                const sanitized = sanitizeToJSON(input);
+                output.textContent += "Sanitized:\n" + sanitized + "\n\n";
+                
+                const parsed = JSON.parse(sanitized);
+                output.textContent += "Parsed successfully:\n" + JSON.stringify(parsed, null, 2);
+                output.style.color = "green";
+            } catch (e) {
+                output.textContent += "ERROR: " + e.message;
+                output.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
