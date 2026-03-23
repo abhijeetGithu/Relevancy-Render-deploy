@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+.eggs/
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.cursor/
+
+# Temp and cache
+.temp_downloads/
+*.log
+
+# Generated outputs (optional: uncomment to exclude from repo)
+# *.csv
+# *.xlsx
+# query_outputs/
+# LLM_Comparator/LLM_Comparator/usage_data.json
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+python-multipart
+httpx
+requests
+openpyxl
+openai
+jsonpath-ng
+selenium
+undetected-chromedriver
+python-dotenv
+
+
+
+
+

@@ -1,0 +1,16 @@
+.git
+.gitignore
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.venv
+**/venv
+.env
+*.md
+!DEPLOY.md
+.cursor
+**/.DS_Store
+**/node_modules
+**/*.log
+LLM_Comparator/**/chromedriver*
+**/.temp_downloads

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LLM Comparator</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body>
+    <nav class="top-nav">
+      <div class="nav-left">
+        <a class="back-btn hidden" id="backToApp" href="#">
+          <span class="back-btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </span>
+          <span class="back-btn-label" id="backToAppText">Back</span>
+        </a>
+        <div class="top-nav-brand">
+          <span>🔍</span> Search Relevancy Suite
+        </div>
+      </div>
+      <div class="top-nav-actions">
+        <a class="ghost-btn" href="/api/sample/csv">Sample CSV</a>
+        <a class="ghost-btn" href="/api/sample/xlsx">Sample XLSX</a>
+      </div>
+    </nav>
+    <main class="container">
+      <header class="hero">
+        <div class="hero-main">
+          <div class="hero-badge">LLM Comparator</div>
+          <h1>Search Relevancy Testing Portal</h1>
+          <p class="subtitle">
+            <span class="subtitle-option">Option 3: Expected Document + Google Benchmark + LLM Judge</span>
+          </p>
+        </div>
+      </header>
+
+      <!-- API Usage Dashboard -->
+      <div id="usage-dashboard" class="usage-dashboard" style="display: none;">
+        <div class="usage-header">
+          <h3>Google API Usage</h3>
+          <div class="usage-status-badge" id="usage-status-badge">
+            <span class="status-dot"></span>
+            <span id="usage-status-text">Active</span>
+          </div>
+        </div>
+        
+        <!-- Daily Limit -->
+        <div class="usage-section">
+          <div class="usage-label">
+            <span class="usage-title">Daily Queries</span>
+            <span class="usage-count" id="daily-usage-count">0 / 500</span>
+          </div>
+          <div class="usage-bar">
+            <div class="usage-bar-fill" id="daily-usage-fill" style="width: 0%"></div>
+          </div>
+          <div class="usage-reset" id="daily-reset-time">Resets in --</div>
+        </div>
+        
+        <!-- Monthly Limit -->
+        <div class="usage-section">
+          <div class="usage-label">
+            <span class="usage-title">Monthly Queries</span>
+            <span class="usage-count" id="monthly-usage-count">0 / 5000</span>
+          </div>
+          <div class="usage-bar">
+            <div class="usage-bar-fill" id="monthly-usage-fill" style="width: 0%"></div>
+          </div>
+          <div class="usage-reset" id="monthly-reset-time">Resets in --</div>
+        </div>
+        
+        <!-- Run Counter & Cooldown -->
+        <div class="usage-section runs-section">
+          <div class="usage-label">
+            <span class="usage-title">Runs Today</span>
+            <span class="usage-count" id="runs-count">0 / 3 free</span>
+          </div>
+          <div id="cooldown-info" class="cooldown-info" style="display: none;">
+            <div class="cooldown-icon">⏱️</div>
+            <div class="cooldown-text">
+              <div class="cooldown-title">Cooldown Active</div>
+              <div class="cooldown-timer" id="cooldown-timer">Next run available in --</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Limit Warning Banner -->
+        <div id="limit-warning" class="limit-warning" style="display: none;">
+          <div class="warning-icon">⚠️</div>
+          <div class="warning-text" id="limit-warning-text"></div>
+        </div>
+      </div>
+
+      <div class="stepper">
+        <div class="step-indicator active" data-step="1">
+          <div class="step-circle">1</div>
+          <div class="step-label">Config</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-indicator" data-step="2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Upload</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-indicator" data-step="3">
+          <div class="step-circle">3</div>
+          <div class="step-label">SearchUnify</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-indicator" data-step="4">
+          <div class="step-circle">4</div>
+          <div class="step-label">Google</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-indicator" data-step="5">
+          <div class="step-circle">5</div>
+          <div class="step-label">LLM</div>
+        </div>
+      </div>
+
+      <form id="compare-form">
+        <!-- Step 1: Configuration -->
+        <section class="card step-card active" id="step-1" data-step="1">
+          <div class="step-header">
+            <div class="step-pill">Step 1</div>
+            <h2>Configuration</h2>
+          </div>
+          <div class="grid">
+            <div class="radio-group">
+              <label class="radio-label">Do you have Expected Results (Ground Truth)?</label>
+              <div class="radio-options">
+                <label><input type="radio" name="hasGroundTruth" value="yes" checked> Yes</label>
+                <label><input type="radio" name="hasGroundTruth" value="no"> No (Queries Only)</label>
+              </div>
+            </div>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="runGoogleBenchmark" checked>
+                Run Google Benchmark
+              </label>
+            </div>
+          </div>
+          <div class="step-actions right-only">
+            <button type="button" class="primary-btn next-btn">Next Step</button>
+          </div>
+        </section>
+
+        <!-- Step 2: Upload -->
+        <section class="card step-card" id="step-2" data-step="2">
+          <div class="step-header">
+            <div class="step-pill">Step 2</div>
+            <h2 id="upload-title">Upload Ground Truth Data</h2>
+          </div>
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="info-title">Supported Files</div>
+              <div class="info-body">CSV, XLSX, XLSM, TXT</div>
+            </div>
+            <div class="info-card">
+              <div class="info-title">Required Columns</div>
+              <div class="info-body" id="required-columns">Query, Expected Title, Expected URL</div>
+            </div>
+            <div class="info-card" id="optionality-rule">
+              <div class="info-title">Optionality Rule</div>
+              <div class="info-body">Fill Title for all rows or URL for all rows</div>
+            </div>
+          </div>
+          <label class="file-input">
+            <span id="upload-label-text">Upload CSV / Excel / TXT</span>
+            <input type="file" name="csvFile" accept=".csv,.xlsx,.xlsm,.txt,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
+            <span class="field-error" data-error-for="csvFile"></span>
+            <span class="file-note" id="upload-note">Provide Expected Title or Expected URL for every row.</span>
+          </label>
+          
+          <!-- File Preview Section -->
+          <div id="file-preview-container" style="display: none; margin-top: 24px;">
+            <div class="step-header" style="margin-bottom: 12px; padding-bottom: 8px;">
+                <h3 style="font-size: 14px; margin: 0;">File Preview</h3>
+                <span id="preview-status-badge" class="hero-badge" style="margin: 0; background: var(--border);">Checking...</span>
+            </div>
+            <div id="preview-error-msg" class="field-error" style="margin-bottom: 12px; display: none;"></div>
+            <div style="overflow-x: auto; border: 1px solid var(--border); border-radius: 8px;">
+                <table class="preview-table" id="file-preview-table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <p class="hint" id="preview-row-count" style="margin-top: 8px; margin-bottom: 0;"></p>
+          </div>
+
+          <!-- RS Column Mapping (shown only in RS mode after file upload) -->
+          <div id="rs-column-mapping" style="display: none; margin-top: 24px; padding: 20px; background: rgba(102, 126, 234, 0.05); border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 12px;">
+            <div style="margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
+              <h3 style="font-size: 15px; margin: 0 0 4px 0; color: var(--text-primary);">Column Mapping</h3>
+              <p class="hint" style="margin: 0;">Select which columns from your sheet correspond to each field.</p>
+            </div>
+            <div class="grid" style="margin-bottom: 12px;">
+              <label>
+                Query Column <span style="color: #e53e3e;">*</span>
+                <select name="rsQueryCol" id="rsQueryCol"></select>
+              </label>
+              <label>
+                Result Title Column <span style="color: #e53e3e;">*</span>
+                <select name="rsResultTitleCol" id="rsResultTitleCol"></select>
+              </label>
+            </div>
+            <div class="grid" style="margin-bottom: 12px;">
+              <label>
+                Result URL Column
+                <select name="rsResultUrlCol" id="rsResultUrlCol"></select>
+              </label>
+              <label>
+                Result Rank Column
+                <select name="rsResultRankCol" id="rsResultRankCol"></select>
+              </label>
+            </div>
+            <div class="grid" id="rs-gt-columns">
+              <label>
+                Expected Title Column
+                <select name="rsExpectedTitleCol" id="rsExpectedTitleCol"></select>
+              </label>
+              <label>
+                Expected URL Column
+                <select name="rsExpectedUrlCol" id="rsExpectedUrlCol"></select>
+              </label>
+            </div>
+          </div>
+
+          <div class="step-actions">
+            <button type="button" class="secondary-btn prev-btn">Back</button>
+            <button type="button" class="primary-btn next-btn">Next Step</button>
+          </div>
+        </section>
+
+        <!-- Step 3: SearchUnify -->
+        <section class="card step-card" id="step-3" data-step="3">
+          <div class="step-header">
+            <div class="step-pill">Step 3</div>
+            <h2>Configure SearchUnify</h2>
+          </div>
+          <label>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span>SearchUnify cURL</span>
+              <button type="button" class="ghost-btn small" id="clear-curl-btn" style="padding: 2px 8px; font-size: 11px;">Clear</button>
+            </div>
+            <textarea name="suCurl" rows="6" placeholder="Paste the SearchUnify cURL command" required></textarea>
+            <span class="field-error" data-error-for="suCurl"></span>
+          </label>
+            <div class="grid">
+              <label>
+                JSON Path for Titles (auto-filled)
+                <input
+                  type="text"
+                  name="suTitlePath"
+                  placeholder="$.result.hits[*].highlight.TitleToDisplayString"
+                />
+                <span class="field-error" data-error-for="suTitlePath"></span>
+              </label>
+            </div>
+          <details class="advanced">
+            <summary>Advanced SearchUnify Settings</summary>
+            <div class="grid">
+              <label>
+                JSON Path for URLs (auto-filled)
+                <input type="text" name="suUrlPath" placeholder="$.result.hits[*].href" />
+              </label>
+              <label>
+                Max Results
+                <input type="number" name="suMaxResults" value="10" min="1" max="50" />
+              </label>
+            </div>
+          </details>
+          <div class="su-test">
+            <div class="su-test-header">
+              <h3>SearchUnify Live Test</h3>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="secondary-btn" id="su-test-btn">Fetch SU Results</button>
+                <button type="button" class="secondary-btn" id="clear-su-results-btn">Clear</button>
+              </div>
+            </div>
+            <label>
+              Test Query
+              <input type="text" name="suTestQuery" placeholder="Type a query to test the cURL" />
+            </label>
+            <div class="su-test-status" id="su-test-status"></div>
+            <div class="su-test-results" id="su-test-results"></div>
+          </div>
+          <div class="step-actions">
+            <button type="button" class="secondary-btn prev-btn">Back</button>
+            <button type="button" class="primary-btn next-btn">Next Step</button>
+          </div>
+        </section>
+
+        <!-- Step 4: Google Benchmark -->
+        <section class="card step-card" id="google-section" data-step="4">
+          <div class="step-header">
+            <div class="step-pill">Step 4</div>
+            <h2>Google Benchmark</h2>
+          </div>
+          
+          <p class="hint" style="margin-bottom: 20px;">
+            Choose how to get Google search results for comparison:
+          </p>
+          
+          <!-- Method Selection Cards -->
+          <div class="method-cards">
+            <!-- API Card -->
+            <div class="method-card selected" data-method="api" id="method-card-api">
+              <div class="method-card-header">
+                <div class="method-card-icon">⚡</div>
+                <h3 class="method-card-title">Google API</h3>
+              </div>
+              <p class="method-card-desc">Uses Google Custom Search API</p>
+              <div class="method-card-tags">
+                <span class="tag tag-success">Fast (1-2 sec/query)</span>
+                <span class="tag tag-warning">Requires API key</span>
+                <span class="tag tag-info">Costs per query</span>
+              </div>
+            </div>
+            
+            <!-- Selenium Card -->
+            <div class="method-card" data-method="selenium" id="method-card-selenium">
+              <div class="method-card-header">
+                <div class="method-card-icon">🤖</div>
+                <h3 class="method-card-title">Web Scraper</h3>
+              </div>
+              <p class="method-card-desc">Scrapes Google search results automatically</p>
+              <div class="method-card-tags">
+                <span class="tag tag-success">Free, no API key</span>
+                <span class="tag tag-warning">Slower (3-5 sec/query)</span>
+                <span class="tag tag-info">May hit CAPTCHAs</span>
+              </div>
+            </div>
+            
+            <!-- CSV Card -->
+            <div class="method-card" data-method="bypass" id="method-card-bypass">
+              <div class="method-card-header">
+                <div class="method-card-icon">📄</div>
+                <h3 class="method-card-title">Use Saved Results</h3>
+              </div>
+              <p class="method-card-desc">Load previously saved results from CSV file</p>
+              <div class="method-card-tags">
+                <span class="tag tag-success">Instant, no API calls</span>
+                <span class="tag tag-info">Requires google_results.csv</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Hidden input to store selected method -->
+          <input type="hidden" name="googleMethod" id="googleMethod" value="api" />
+          
+          <!-- Common Configuration -->
+          <div style="margin-top: 24px;">
+            <label>
+              Sites (optional, comma-separated)
+              <input type="text" name="googleSites" placeholder="docs.qualys.com, help.salesforce.com" />
+              <span class="hint">Restrict search to specific domains</span>
+            </label>
+          </div>
+          
+          <!-- API-specific Configuration -->
+          <div id="api-config" class="method-config">
+            <details class="advanced" open>
+              <summary>API Credentials (Required)</summary>
+              <div class="grid">
+                <label>
+                  Google API Key
+                  <input type="password" name="googleApiKey" placeholder="AIza..." />
+                  <span class="field-error" data-error-for="googleApiKey"></span>
+                </label>
+                <label>
+                  CSE ID (cx)
+                  <input type="text" name="googleCseId" placeholder="Custom Search Engine ID" />
+                  <span class="field-error" data-error-for="googleCseId"></span>
+                </label>
+              </div>
+            </details>
+          </div>
+          
+          <!-- Selenium-specific Configuration -->
+          <div id="selenium-config" class="method-config" style="display: none;">
+            <div style="margin-top: 16px;">
+              <label>
+                Docs Site Domain
+                <input type="text" name="seleniumSite" placeholder="docs.searchunify.com" />
+                <span class="hint">Queries will be searched with <code>site:domain</code> appended (e.g. "what is content source site:docs.searchunify.com")</span>
+              </label>
+            </div>
+            <div class="info-card" style="margin-top: 16px; background: rgba(237, 137, 54, 0.1); border-color: rgba(237, 137, 54, 0.3);">
+              <div class="info-title" style="color: var(--warning);">⚠️ Important Notes</div>
+              <div class="info-body" style="color: var(--text-secondary); font-size: 13px; font-weight: normal;">
+                <ul style="margin: 8px 0; padding-left: 20px;">
+                  <li>Scraping is slower than API (3-5 seconds per query)</li>
+                  <li>May encounter CAPTCHAs with many queries</li>
+                  <li>Runs headless on server (no display needed)</li>
+                  <li>Includes anti-bot measures for reliability</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- CSV-specific Configuration -->
+          <div id="bypass-config" class="method-config" style="display: none;">
+            <div class="info-card" style="margin-top: 16px; background: rgba(102, 126, 234, 0.08); border-color: rgba(102, 126, 234, 0.25);">
+              <div class="info-title" style="color: var(--primary);">📋 CSV File Required</div>
+              <div class="info-body" style="color: var(--text-secondary); font-size: 13px; font-weight: normal;">
+                <p style="margin: 8px 0;">
+                  Place <code>google_results.csv</code> 
+                  in the project root directory.
+                </p>
+                <p style="margin: 8px 0;">
+                  The CSV should contain columns: <code>query</code>, 
+                  <code>google_result_title</code>, 
+                  <code>google_result_url</code>
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="step-actions">
+            <button type="button" class="secondary-btn prev-btn">Back</button>
+            <button type="button" class="primary-btn next-btn">Next Step</button>
+          </div>
+        </section>
+
+        <!-- Step 5: LLM Configuration -->
+        <section class="card step-card" id="step-5" data-step="5">
+          <div class="step-header">
+            <div class="step-pill">Step 5</div>
+            <h2>LLM Configuration</h2>
+          </div>
+          <div class="grid">
+            <label>
+              LLM API Key
+              <input type="password" name="llmApiKey" placeholder="sk-... or AIza..." />
+              <span class="hint">Use your OpenAI key for GPT models or Google AI key for Gemini models</span>
+            </label>
+            <label>
+              Model
+              <select name="llmModel">
+                <option value="gpt-4o-mini">OpenAI (gpt-4o-mini)</option>
+                <option value="gemini-2.5-flash">Gemini (gemini-2.5-flash)</option>
+              </select>
+            </label>
+          </div>
+          <div style="margin-top: 16px;">
+            <label>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span>LLM Prompt</span>
+                <button type="button" class="ghost-btn small" id="reset-prompt-btn" style="padding: 2px 8px; font-size: 11px;">Reset to Default</button>
+              </div>
+              <textarea name="llmPrompt" rows="8" style="font-size: 13px; line-height: 1.5;">You are a search relevancy evaluator. Given a search query, an expected document title (the ideal answer), and a list of search result titles, score how well the search results satisfy the user's intent.
+
+Evaluation Criteria:
+1. Title Relevance (0-10): How well do the result titles match the query intent? Do the titles indicate content that would answer the user's question?
+2. Expected Match: Does any result title closely match or relate to the expected document title? If yes, that's a strong positive signal.
+3. Ranking Quality: Are the most relevant titles ranked higher (rank 1-2)?
+4. Irrelevance: If the titles are completely unrelated to the query, score low (0-3).
+
+Respond in JSON with keys: score (0-10), reason.</textarea>
+              <span class="hint">This prompt is sent to the LLM for each query. It receives the query, expected title, and result titles. Edit freely to customize scoring criteria.</span>
+            </label>
+          </div>
+          
+          <div class="progress-panel" aria-hidden="true">
+            <div class="progress-meta">
+              <div class="progress-label" id="progress-text">Ready</div>
+              <div class="progress-count" id="progress-count"></div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-actions">
+                <button type="button" class="ghost-btn small" id="show-logs-btn">Show Logs</button>
+            </div>
+          </div>
+
+          <div id="status" class="status" style="display: none;"></div>
+
+          <div class="form-actions step-actions">
+            <button type="button" class="secondary-btn prev-btn">Back</button>
+            <button type="submit" class="primary-btn">Run LLM-Based Analysis</button>
+          </div>
+          
+          <!-- Results Area -->
+          <div id="results-area" style="display: none; margin-top: 32px;">
+              <div class="step-header">
+                  <h2>Analysis Complete</h2>
+              </div>
+              
+              <!-- Insights Section -->
+              <div id="insights-container" style="margin-bottom: 24px; padding: 20px; background: rgba(102, 126, 234, 0.08); border: 1px solid rgba(102, 126, 234, 0.25); border-radius: 12px; display: none;">
+                  <h3 style="margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M2 12h20M2 12l4-4m-4 4l4 4M22 12l-4-4m4 4l-4 4"/>
+                      </svg>
+                      Performance Insights
+                  </h3>
+                  <div id="insights-content" style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;"></div>
+              </div>
+
+              <div class="results-actions">
+                  <button type="button" class="secondary-btn" id="preview-btn">Preview Analysis</button>
+                  <button type="button" class="secondary-btn" id="hide-preview-btn" style="display: none;">Hide Preview</button>
+                  <button type="button" class="primary-btn" id="download-btn">Download Report</button>
+              </div>
+              <div id="preview-container" style="display: none; margin-top: 24px; overflow-x: auto;">
+                  <table class="preview-table">
+                      <thead id="preview-head"></thead>
+                      <tbody id="preview-body"></tbody>
+                  </table>
+              </div>
+          </div>
+        </section>
+
+      </form>
+    </main>
+
+    <!-- Logs Modal -->
+    <div id="logs-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Live Logs</h3>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button type="button" class="ghost-btn small" id="copy-logs-btn">Copy Logs</button>
+                    <button type="button" class="ghost-btn small" id="clear-logs-btn">Clear Logs</button>
+                    <span class="close-modal">&times;</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="logs-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <script src="/static/app.js?v=6"></script>
+  </body>
+</html>

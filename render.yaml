@@ -1,0 +1,64 @@
+# Search Relevancy Suite - Render Blueprint
+# Deploys: Portal, DataQuery Engine, LLM Comparator, Relevancy Script
+# After deploy, set env vars (e.g. LLM_COMPARATOR_URL) so services can call each other.
+
+services:
+  - type: web
+    name: relevancy-portal
+    runtime: python
+    plan: free
+    rootDir: .
+    buildCommand: pip install -r requirements-portal.txt
+    startCommand: uvicorn portal.app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+
+  - type: web
+    name: dataquery-engine
+    runtime: docker
+    plan: free
+    rootDir: DataQuery_Engine
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: GUNICORN_WORKERS
+        value: 1
+      - key: GUNICORN_TIMEOUT
+        value: 1200
+      - key: FLASK_DEBUG
+        value: "false"
+      # Set to your Render service URLs after first deploy:
+      # - key: LLM_COMPARATOR_URL
+      #   fromService:
+      #     name: llm-comparator
+      #     type: web
+      #     envVarKey: RENDER_EXTERNAL_URL
+
+  - type: web
+    name: llm-comparator
+    runtime: python
+    plan: free
+    rootDir: LLM_Comparator/LLM_Comparator
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      # - key: OPENAI_API_KEY
+      #   sync: false
+
+  - type: web
+    name: relevancy-script
+    runtime: python
+    plan: free
+    rootDir: relevancy-script
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      - key: APP_ENV
+        value: production

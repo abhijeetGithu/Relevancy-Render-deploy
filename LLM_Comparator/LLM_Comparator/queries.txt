@@ -1,0 +1,15 @@
+Finding a patient using Smart Find
+Initial Evaluation: Documenting time and service-based activities in a note
+Posting a transfer
+Intake a patient and schedule the first visit
+Converting a New Lead to a Patient
+Scheduler icons: Visual cues for patient appointments
+Patient Checkout Process
+Scheduler screen overview and navigation
+Optimizing your assessment documentation in Raintree
+Documenting a Daily Therapy Visit
+Review a patient's chart after discharge
+Managing patient tasks and caseloads
+Patient ledger overview and transaction tracking
+Understanding the Daily Ledger and Claim Statuses
+Resolve claim exceptions in the follow-up dashboard
