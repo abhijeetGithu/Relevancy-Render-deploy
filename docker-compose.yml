@@ -1,19 +1,27 @@
 # Search Relevancy Suite — production-style stack (matches python3 launch.py)
 #
-# Usage:
-#   cp .env.example .env   # optional: API keys, worker counts
-#   docker compose build
-#   docker compose up -d
+# Local build & run:
+#   cp .env.example .env
+#   docker compose build && docker compose up -d
 #
-# Ports (same as local): Portal 8000, DataQuery 5050, LLM Comparator 8001, relevancy-script 8002
+# Push images to Docker Hub (set SUITE_REGISTRY=yourdockerhubusername in .env):
+#   docker compose build && docker compose push
+#
+# Run from pre-pulled images (no rebuild):
+#   docker compose pull && docker compose up -d --no-build
+#
+# Ports: Portal 8000, DataQuery 5050, LLM Comparator 8001, relevancy-script 8002
 #
 # DataQuery Engine calls LLM Comparator over the Docker network (LLM_COMPARATOR_URL).
+#
+# Image names use SUITE_REGISTRY (e.g. your Docker Hub user). Default "local" tags locally only.
 
 services:
   llm-comparator:
     build:
       context: ./LLM_Comparator/LLM_Comparator
       dockerfile: Dockerfile
+    image: ${SUITE_REGISTRY:-local}/relevancy-suite-llm-comparator:${SUITE_TAG:-latest}
     container_name: suite-llm-comparator
     # Selenium/Chrome uses /dev/shm; default 64MB often causes crashes in headless Chrome
     shm_size: "1gb"
@@ -35,6 +43,7 @@ services:
     build:
       context: ./DataQuery_Engine
       dockerfile: Dockerfile
+    image: ${SUITE_REGISTRY:-local}/relevancy-suite-dataquery-engine:${SUITE_TAG:-latest}
     container_name: suite-dataquery-engine
     ports:
       - "${DATAQUERY_HOST_PORT:-5050}:5050"
@@ -62,6 +71,7 @@ services:
     build:
       context: ./relevancy-script
       dockerfile: Dockerfile
+    image: ${SUITE_REGISTRY:-local}/relevancy-suite-relevancy-script:${SUITE_TAG:-latest}
     container_name: suite-relevancy-script
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8002"]
     ports:
@@ -78,6 +88,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.portal
+    image: ${SUITE_REGISTRY:-local}/relevancy-suite-portal:${SUITE_TAG:-latest}
     container_name: suite-portal
     ports:
       - "${PORTAL_HOST_PORT:-8000}:8000"

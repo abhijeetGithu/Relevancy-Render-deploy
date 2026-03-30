@@ -3,7 +3,7 @@
   "APPEND_TO_CSV": false,
   "MULTI_SOURCE_CONFIG": {
     "all_content": {
-      "document_count": 5,
+      "document_count": 20,
       "url_field": "href",
       "title_field": "TitleToDisplay",
       "description_field": "SummaryToDisplay",

@@ -31,6 +31,48 @@ docker compose build
 docker compose up -d
 ```
 
+### Push images to Docker Hub (share your stack)
+
+1. Create a [Docker Hub](https://hub.docker.com/) account and log in:
+
+   ```bash
+   docker login
+   ```
+
+2. In `.env`, set your Hub **username** (or org) so image names are pushable:
+
+   ```bash
+   SUITE_REGISTRY=yourdockerhubusername
+   SUITE_TAG=latest
+   ```
+
+3. Build and push all four images:
+
+   ```bash
+   docker compose build
+   docker compose push
+   ```
+
+   Images pushed:  
+   `yourdockerhubusername/relevancy-suite-portal:latest`,  
+   `yourdockerhubusername/relevancy-suite-dataquery-engine:latest`,  
+   `yourdockerhubusername/relevancy-suite-llm-comparator:latest`,  
+   `yourdockerhubusername/relevancy-suite-relevancy-script:latest`.
+
+### Run from pushed images (another machine or teammate)
+
+They need this repo’s root `docker-compose.yml`, `.env` (or `.env.example` copied), and the **same** `SUITE_REGISTRY` and `SUITE_TAG` you used to push. Then:
+
+```bash
+cp .env.example .env
+# Set SUITE_REGISTRY=yourdockerhubusername  (the account that owns the images)
+# Set OPENAI_API_KEY etc. if needed
+docker compose pull
+docker compose up -d --no-build
+```
+
+Open the same URLs as below. Use `--no-build` so Compose uses pulled images instead of rebuilding from Dockerfiles.
+
 ### 3. Open the apps
 
 - Portal: `http://<host>:8000` (or `PORTAL_HOST_PORT` from `.env`)
