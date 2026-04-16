@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import csv
 import io
+import os
 import uuid
 from typing import Any, Dict, List, Optional
 
@@ -22,6 +23,9 @@ app = FastAPI(title="Relevancy System")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 templates = Jinja2Templates(directory="app/templates")
+
+PORTAL_URL = os.environ.get("PORTAL_URL", "/")
+LLM_COMPARATOR_URL = os.environ.get("LLM_COMPARATOR_URL", "/")
 
 
 class _RunState:
@@ -53,7 +57,17 @@ _RUNS: Dict[str, _RunState] = {}
 
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "portal_url": PORTAL_URL,
+        "llm_comparator_url": LLM_COMPARATOR_URL,
+    })
+
+
+@app.get("/api/config")
+def get_config():
+    """Return service URLs for frontend cross-service navigation."""
+    return {"portal_url": PORTAL_URL, "llm_comparator_url": LLM_COMPARATOR_URL}
 
 
 @app.get("/health")

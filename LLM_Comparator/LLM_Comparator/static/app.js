@@ -4,26 +4,37 @@ const _fromParam = _urlParams.get("from");
 const isDqeMode = _fromParam === "dqe";
 const isRsMode = _fromParam === "rs";
 
-// Back-to-app navigation
-(function initBackButton() {
+// Back-to-app navigation — loads URLs from /api/config
+(async function initBackButton() {
   const backBtn = document.getElementById("backToApp");
   const backText = document.getElementById("backToAppText");
-  if (_fromParam && backBtn && backText) {
-    const apps = {
-      dqe: { label: "Back to Data Query Engine", url: "/relevancy-framework/dataquery/" },
-      rs: { label: "Back to Portal", url: "/relevancy-framework/" },
-    };
-    const app = apps[_fromParam];
-    if (app) {
-      backBtn.href = "#";
-      backText.textContent = app.label;
-      backBtn.classList.remove("hidden");
-      backBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        window.close();
-        setTimeout(function () { window.location.href = app.url; }, 300);
-      });
-    }
+  if (!_fromParam || !backBtn || !backText) return;
+
+  let portalUrl = "/";
+  let dataqueryUrl = "/";
+  try {
+    const r = await fetch("/api/config");
+    const cfg = await r.json();
+    if (cfg.portal_url) portalUrl = cfg.portal_url.replace(/\/$/, "") + "/";
+    if (cfg.dataquery_url) dataqueryUrl = cfg.dataquery_url.replace(/\/$/, "") + "/";
+  } catch (e) {
+    console.warn("Could not load service config:", e);
+  }
+
+  const apps = {
+    dqe: { label: "Back to Data Query Engine", url: dataqueryUrl },
+    rs: { label: "Back to Portal", url: portalUrl },
+  };
+  const app = apps[_fromParam];
+  if (app) {
+    backBtn.href = "#";
+    backText.textContent = app.label;
+    backBtn.classList.remove("hidden");
+    backBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      window.close();
+      setTimeout(function () { window.location.href = app.url; }, 300);
+    });
   }
 })();
 

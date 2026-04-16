@@ -1241,7 +1241,7 @@
                 <span class="truncate">Search Relevancy Tool</span>
             </div>
             <div class="wizard-nav-actions flex flex-wrap gap-2 sm:gap-3 justify-end">
-                <a href="http://localhost:8004"
+                <a href="/" id="suiteHomeLink"
                     class="btn secondary inline-flex items-center gap-2 no-underline px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-100 font-medium transition-colors text-sm sm:text-base">
                     <svg class="flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2279,7 +2279,7 @@
                         <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
                             <button
                                 class="btn success w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg"
-                                onclick="window.open('/relevancy-framework/llm/?from=dqe', '_blank')">
+                                onclick="openLlmComparison()">
                                 Yes, Open LLM Comparator
                                 <svg class="flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2">
@@ -2835,8 +2835,22 @@
             const cleanEndpoint = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
             return API_BASE + cleanEndpoint;
         }
-        // LLM Comparator base URL (for "LLM Comparison" and Google-only backend call)
-        const LLM_COMPARATOR_URL = '/relevancy-framework/llm/';
+        // LLM Comparator base URL — updated dynamically from /api/config
+        let LLM_COMPARATOR_URL = '/';
+        let PORTAL_URL = '/';
+
+        (async function loadServiceConfig() {
+            try {
+                const r = await fetch(apiUrl('/api/config'));
+                const cfg = await r.json();
+                if (cfg.llm_comparator_url) LLM_COMPARATOR_URL = cfg.llm_comparator_url.replace(/\/$/, '') + '/';
+                if (cfg.portal_url) PORTAL_URL = cfg.portal_url.replace(/\/$/, '') + '/';
+                const homeLink = document.getElementById('suiteHomeLink');
+                if (homeLink) homeLink.href = PORTAL_URL;
+            } catch (e) {
+                console.warn('Could not load service config:', e);
+            }
+        })();
         // ==================== END API BASE URL CONFIGURATION ====================
 
         let contentSources = [];
@@ -4146,7 +4160,7 @@ ${removeBtn}
         }
 
         function openLlmComparison() {
-            const base = (typeof LLM_COMPARATOR_URL !== 'undefined') ? LLM_COMPARATOR_URL : '/relevancy-framework/llm/';
+            const base = (typeof LLM_COMPARATOR_URL !== 'undefined' && LLM_COMPARATOR_URL) ? LLM_COMPARATOR_URL : '/';
             window.open(base + '?from=dqe', '_blank');
         }
 

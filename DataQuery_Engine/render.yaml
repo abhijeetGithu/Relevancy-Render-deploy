@@ -5,8 +5,6 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile
     envVars:
-      - key: PORT
-        value: 5051
       - key: GUNICORN_WORKERS
         value: 1
       - key: GUNICORN_TIMEOUT

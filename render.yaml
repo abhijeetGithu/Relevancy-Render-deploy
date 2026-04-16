@@ -1,6 +1,6 @@
 # Search Relevancy Suite - Render Blueprint
 # Deploys: Portal, DataQuery Engine, LLM Comparator, Relevancy Script
-# After deploy, set env vars (e.g. LLM_COMPARATOR_URL) so services can call each other.
+# Services discover each other via RENDER_EXTERNAL_URL references.
 
 services:
   - type: web
@@ -14,6 +14,21 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: "3.11.0"
+      - key: DATAQUERY_URL
+        fromService:
+          name: dataquery-engine
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: LLM_COMPARATOR_URL
+        fromService:
+          name: llm-comparator
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: RELEVANCY_SCRIPT_URL
+        fromService:
+          name: relevancy-script
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
 
   - type: web
     name: dataquery-engine
@@ -28,12 +43,16 @@ services:
         value: 1200
       - key: FLASK_DEBUG
         value: "false"
-      # Set to your Render service URLs after first deploy:
-      # - key: LLM_COMPARATOR_URL
-      #   fromService:
-      #     name: llm-comparator
-      #     type: web
-      #     envVarKey: RENDER_EXTERNAL_URL
+      - key: LLM_COMPARATOR_URL
+        fromService:
+          name: llm-comparator
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: PORTAL_URL
+        fromService:
+          name: relevancy-portal
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
 
   - type: web
     name: llm-comparator
@@ -46,6 +65,16 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: "3.11.0"
+      - key: PORTAL_URL
+        fromService:
+          name: relevancy-portal
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: DATAQUERY_URL
+        fromService:
+          name: dataquery-engine
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
       # - key: OPENAI_API_KEY
       #   sync: false
 
@@ -62,3 +91,13 @@ services:
         value: "3.11.0"
       - key: APP_ENV
         value: production
+      - key: PORTAL_URL
+        fromService:
+          name: relevancy-portal
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: LLM_COMPARATOR_URL
+        fromService:
+          name: llm-comparator
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL

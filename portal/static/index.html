@@ -36,7 +36,7 @@
     <section class="cards-grid one-tool">
 
       <!-- DataQuery_Engine -->
-      <a href="dataquery/" class="app-card" id="card-dqe" data-url="dataquery/">
+      <a href="{{DATAQUERY_URL}}" class="app-card" id="card-dqe" data-url="{{DATAQUERY_URL}}">
         <div class="card-status">
           <span class="status-dot" id="dot-dqe"></span>
           <span class="status-label" id="label-dqe">Checking...</span>
@@ -70,7 +70,7 @@
           <span class="flow-step optional">LLM Comparison</span>
         </div>
         <div class="card-footer">
-          <span class="port-label">Port 5051</span>
+          <span class="port-label">DataQuery Engine</span>
           <span class="launch-btn">Open App &rarr;</span>
         </div>
       </a>
@@ -78,15 +78,13 @@
     </section>
 
     <footer class="footer">
-      <p>All services are launched via <code>launch.py</code> &mdash; Portal on /relevancy-framework/ &middot; DataQuery
-        on /relevancy-framework/dataquery/
-        &middot; LLM Comparator on /relevancy-framework/llm/</p>
+      <p>Search Relevancy Suite &mdash; Portal &middot; DataQuery Engine &middot; LLM Comparator</p>
     </footer>
   </main>
 
   <script>
     const services = [
-      { id: "dqe", url: "dataquery/", name: "Data Query Engine" },
+      { id: "dqe", url: "{{DATAQUERY_URL}}", name: "Data Query Engine" },
     ];
 
     async function checkService(svc) {

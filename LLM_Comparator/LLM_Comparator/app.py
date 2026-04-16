@@ -90,12 +90,21 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 DEFAULT_OPENAI_MODEL = os.getenv("OPENAI_MODEL", DEFAULT_OPENAI_MODEL)
 
+PORTAL_URL = os.getenv("PORTAL_URL", "/")
+DATAQUERY_URL = os.getenv("DATAQUERY_URL", "/")
+
 progress_state = {"current": 0, "total": 0, "status": "idle", "stage": ""}
 
 
 @app.get("/")
 async def root():
     return FileResponse("static/index.html")
+
+
+@app.get("/api/config")
+async def get_config():
+    """Return service URLs for frontend cross-service navigation."""
+    return {"portal_url": PORTAL_URL, "dataquery_url": DATAQUERY_URL}
 
 
 @app.get("/api/health")

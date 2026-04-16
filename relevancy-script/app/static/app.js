@@ -666,8 +666,14 @@ function dismissLlmPrompt() {
 }
 
 if (llmPromptYes) {
-  llmPromptYes.addEventListener('click', () => {
-    window.open('/relevancy-framework/llm/?from=rs', '_blank');
+  llmPromptYes.addEventListener('click', async () => {
+    let llmUrl = '/';
+    try {
+      const r = await fetch('/api/config');
+      const cfg = await r.json();
+      if (cfg.llm_comparator_url) llmUrl = cfg.llm_comparator_url.replace(/\/$/, '') + '/';
+    } catch (e) { /* fallback */ }
+    window.open(llmUrl + '?from=rs', '_blank');
   });
 }
 

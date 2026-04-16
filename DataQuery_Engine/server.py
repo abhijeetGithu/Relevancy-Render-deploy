@@ -282,6 +282,16 @@ def index():
     """Serve the frontend HTML file"""
     return send_from_directory(BASE_DIR, 'frontend.html')
 
+
+@app.route('/api/config')
+def get_config():
+    """Return service URLs for frontend to use in cross-service navigation."""
+    return jsonify({
+        'portal_url': PORTAL_URL,
+        'llm_comparator_url': LLM_COMPARATOR_URL,
+    })
+
+
 @app.route('/api/update-curl-input', methods=['POST'])
 def update_curl_input():
     """Full replacement of curl_input.json with newly parsed curl command data.
@@ -1991,6 +2001,7 @@ def temp_file_columns():
 
 # Base URL for LLM Comparator (for Google-only and LLM comparison redirect)
 LLM_COMPARATOR_URL = os.environ.get('LLM_COMPARATOR_URL', 'http://localhost:8005')
+PORTAL_URL = os.environ.get('PORTAL_URL', '/')
 
 
 def _llm_comparator_404_message(http_error, base_url):
