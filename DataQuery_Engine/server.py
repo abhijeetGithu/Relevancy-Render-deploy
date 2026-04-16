@@ -1017,7 +1017,7 @@ def run_main():
         }), 500
 
 @app.route('/api/get-config', methods=['GET'])
-def get_config():
+def get_config_json():
     """Get current configuration"""
     try:
         config_path = os.path.join(BASE_DIR, 'config.json')
