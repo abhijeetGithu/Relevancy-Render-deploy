@@ -235,6 +235,7 @@ def perform_search_evaluation(
             if documents:
                 print(f"📋 Found {len(documents)} results:")
                 successful_searches += 1
+                sys.stdout.flush()
 
                 for i, doc in enumerate(documents):
                     if query_only:
@@ -371,7 +372,11 @@ def perform_search_evaluation(
     
     # Save results to Excel with two sheets
     if all_results:
-        results_df = pd.DataFrame(all_results)
+        try:
+            results_df = pd.DataFrame(all_results)
+        except Exception as e:
+            print(f"❌ Error creating DataFrame from results: {e}")
+            return
 
         try:
             total_queries = len(df)
@@ -533,6 +538,9 @@ def perform_search_evaluation(
             traceback.print_exc()
     else:
         print("❌ No results to save")
+
+    print("\n✅ SEARCH EVALUATION PROCESS COMPLETED")
+    sys.stdout.flush()
 
 def analyze_search_results(results_csv: str):
     """

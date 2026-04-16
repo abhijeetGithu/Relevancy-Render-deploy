@@ -2468,7 +2468,7 @@
         "es_id": "250312123150037"
       },
       {
-        "_id": "250509121503673",
+        "_id": "250519121503673",
         "_score": 0.82804745,
         "matched_queries": [
           "knn"
@@ -2513,20 +2513,20 @@
           }
         ],
         "previewType": 1,
-        "href": "https://raintree.rightanswers.com/portal/app/portlets/results/viewsolution.jsp?solutionid=250509121503673",
+        "href": "https://raintree.rightanswers.com/portal/app/portlets/results/viewsolution.jsp?solutionid=250519121503673",
         "clientHref": "https://raintreesystems--su.sandbox.my.salesforce.com",
-        "Id": "250509121503673",
+        "Id": "250519121503673",
         "objName": "article",
         "objLabel": "Article",
         "sourceName": "1_3_rightanswer",
-        "uniqueField": "1_3_rightanswer_article_250509121503673",
+        "uniqueField": "1_3_rightanswer_article_250519121503673",
         "sourceLabel": "KnowledgeBase",
         "csTypeId": 70,
         "solved": "Unsolved",
         "indexedDate": "2026-01-10T06:58:44.095Z",
         "sortOrder": null,
         "contentTag": "KnowledgeBase",
-        "es_id": "250509121503673"
+        "es_id": "250519121503673"
       },
       {
         "_id": "250325130340160",
@@ -4096,7 +4096,7 @@
                               "should": [
                                 {
                                   "knn": {
-                                    "text_vector_e4b68001-f82d-11f0-8a3d-0242ac12000fgtemultilingual": {
+                                    "text_vector_e4b68005-f82d-11f0-8a3d-0242ac12000fgtemultilingual": {
                                       "vector": [
                                         -0.06824817508459091,
                                         0.08813973516225815,
@@ -4253,7 +4253,7 @@
                                         0.0816093161702156,
                                         -0.004858369007706642,
                                         0.029810065403580666,
-                                        -0.02198857255280018,
+                                        -0.02198857255280058,
                                         0.01857682317495346,
                                         0.07626409828662872,
                                         -0.006931894924491644,
@@ -4451,7 +4451,7 @@
                                         0.027047349140048027,
                                         0.00670580891892314,
                                         0.033596768975257874,
-                                        0.055998001247644424,
+                                        0.055998005247644424,
                                         0.033245086669921875,
                                         -0.05725680664181709,
                                         0.04551617056131363,
@@ -4540,7 +4540,7 @@
                                         -0.025639284402132034,
                                         0.0003219729696866125,
                                         0.018317971378564835,
-                                        0.031544942408800125,
+                                        0.031544942408800525,
                                         -0.010613546706736088,
                                         0.018528569489717484,
                                         -0.03847818449139595,
@@ -4573,7 +4573,7 @@
                                         0.020112603902816772,
                                         -0.02345372922718525,
                                         -0.021456820890307426,
-                                        0.06449996680021286,
+                                        0.06449996680061286,
                                         -0.037151534110307693,
                                         0.035261429846286774,
                                         0.04186256602406502,
@@ -4601,7 +4601,7 @@
                                         -0.026765000075101852,
                                         -0.03277861699461937,
                                         -0.029490554705262184,
-                                        0.08002754300832748,
+                                        0.08006754300832748,
                                         -0.013609442859888077,
                                         0.01616143248975277,
                                         0.08718597888946533,
@@ -4949,7 +4949,7 @@
     },
     "modelName": "Alibaba-NLP/gte-multilingual-base",
     "hybridPipelineQuery": {
-      "e4b68001-f82d-11f0-8a3d-0242ac12000f-hybrid-pipeline": {
+      "e4b68005-f82d-11f0-8a3d-0242ac12000f-hybrid-pipeline": {
         "description": "pipeline created programmatically",
         "phase_results_processors": [
           {

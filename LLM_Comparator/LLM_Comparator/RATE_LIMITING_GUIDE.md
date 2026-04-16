@@ -8,8 +8,8 @@ Your LLM Comparator now includes a comprehensive rate limiting system to protect
 
 ### View Your Usage
 
-1. Start the server: `python -m uvicorn app:app --reload --port 8000`
-2. Open http://localhost:8000 in your browser
+1. Start the server: `python -m uvicorn app:app --reload --port 8004`
+2. Open http://localhost:8004 in your browser
 3. The **Google API Usage** dashboard will appear at the top of the page (when rate limiting is enabled)
 
 ### Dashboard Features
@@ -126,7 +126,7 @@ Set `RATE_LIMITING_ENABLED = False` in `services/rate_limiter.py`
 
 ### View Current Status
 ```bash
-curl http://localhost:8000/api/usage-status | python -m json.tool
+curl http://localhost:8004/api/usage-status | python -m json.tool
 ```
 
 ### Check Usage File

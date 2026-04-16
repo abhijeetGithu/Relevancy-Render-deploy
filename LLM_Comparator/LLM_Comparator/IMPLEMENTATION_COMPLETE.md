@@ -151,7 +151,7 @@ Added:
 
 1. **Start the server**:
    ```bash
-   python -m uvicorn app:app --reload --port 8000
+   python -m uvicorn app:app --reload --port 8004
    ```
 
 2. **Navigate to Step 4** in the UI

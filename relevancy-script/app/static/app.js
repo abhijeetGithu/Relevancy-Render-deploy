@@ -138,7 +138,7 @@ function updateCurlStep() {
   const isCommunity = pageTypeInput.value === 'community';
   setHidden(normalCurlSection, isCommunity);
   setHidden(communityCurlSection, !isCommunity);
-  
+
   if (isCommunity) {
     curlStepTitle.textContent = 'Paste Community cURL';
     curlStepDesc.textContent = 'Paste the cURL from your community search endpoint';
@@ -275,7 +275,7 @@ async function handleFile(file) {
 csvFile.addEventListener('change', async (e) => {
   const file = e.target.files?.[0];
   if (!file) return;
-  
+
   try {
     await handleFile(file);
   } catch (err) {
@@ -336,14 +336,14 @@ function setupConfigStep() {
 
   // Populate dropdowns
   const headers = currentCsv.headers;
-  
-  queryColumn.innerHTML = headers.map(h => 
+
+  queryColumn.innerHTML = headers.map(h =>
     `<option value="${escapeHtml(h)}">${escapeHtml(h)}</option>`
   ).join('');
-  
-  const optionalOpts = `<option value="">(none)</option>` + 
+
+  const optionalOpts = `<option value="">(none)</option>` +
     headers.map(h => `<option value="${escapeHtml(h)}">${escapeHtml(h)}</option>`).join('');
-  
+
   expectedTitleColumn.innerHTML = optionalOpts;
   expectedUrlColumn.innerHTML = optionalOpts;
 
@@ -374,13 +374,13 @@ function renderPreview() {
   const thead = previewTable.querySelector('thead');
   const tbody = previewTable.querySelector('tbody');
 
-  thead.innerHTML = `<tr>${currentCsv.headers.map(h => 
+  thead.innerHTML = `<tr>${currentCsv.headers.map(h =>
     `<th>${escapeHtml(h)}</th>`
   ).join('')}</tr>`;
 
   const previewRows = currentCsv.rows.slice(0, 5);
-  tbody.innerHTML = previewRows.map(r => 
-    `<tr>${currentCsv.headers.map((_, i) => 
+  tbody.innerHTML = previewRows.map(r =>
+    `<tr>${currentCsv.headers.map((_, i) =>
       `<td>${escapeHtml(r[i] ?? '')}</td>`
     ).join('')}</tr>`
   ).join('');
@@ -441,7 +441,7 @@ async function runAnalysis() {
   runStatus.textContent = 'Starting analysis...';
 
   try {
-    const res = await fetch('/api/runs', {
+    const res = await fetch('api/runs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -458,25 +458,25 @@ async function runAnalysis() {
 async function pollRun(runId, isQueryOnly) {
   const startedAt = Date.now();
   const maxMs = 10 * 60 * 1000;
-  
+
   // Get log viewer elements
   const logContent = document.getElementById('logContent');
   const logCount = document.getElementById('logCount');
   const logViewer = document.getElementById('logViewer');
-  
+
   // Clear previous logs
   logContent.innerHTML = '<div class="log-empty">Waiting for logs...</div>';
   logCount.textContent = '0 entries';
-  
+
   let lastLogCount = 0;
 
   while (true) {
-    const res = await fetch(`/api/runs/${encodeURIComponent(runId)}`);
+    const res = await fetch(`api/runs/${encodeURIComponent(runId)}`);
     if (!res.ok) throw new Error(`Status check failed: ${res.status}`);
     const st = await res.json();
 
-    const progress = st.totalQueries > 0 
-      ? (st.completedQueries / st.totalQueries) * 100 
+    const progress = st.totalQueries > 0
+      ? (st.completedQueries / st.totalQueries) * 100
       : 0;
     runProgressFill.style.width = progress + '%';
     runStatus.textContent = `Processing: ${st.completedQueries}/${st.totalQueries} queries`;
@@ -491,9 +491,9 @@ async function pollRun(runId, isQueryOnly) {
       setHidden(runProgress, true);
       setHidden(resultsSection, false);
 
-      downloadCsv.href = `/api/runs/${encodeURIComponent(runId)}/download`;
+      downloadCsv.href = `api/runs/${encodeURIComponent(runId)}/download`;
 
-      const rr = await fetch(`/api/runs/${encodeURIComponent(runId)}/results`);
+      const rr = await fetch(`api/runs/${encodeURIComponent(runId)}/results`);
       if (!rr.ok) throw new Error('Fetching results failed');
       const data = await rr.json();
       renderResults(data.results, isQueryOnly);
@@ -516,18 +516,18 @@ async function pollRun(runId, isQueryOnly) {
 function updateLogViewer(logs, logContent, logCount, previousCount) {
   // Update log count
   logCount.textContent = `${logs.length} entries`;
-  
+
   // If first logs, clear the placeholder
   if (previousCount === 0 && logs.length > 0) {
     logContent.innerHTML = '';
   }
-  
+
   // Only add new logs
   for (let i = previousCount; i < logs.length; i++) {
     const log = logs[i];
     const entry = document.createElement('div');
     entry.className = `log-entry ${log.level}`;
-    
+
     // Format time (show only time part)
     const time = new Date(log.time).toLocaleTimeString('en-US', {
       hour12: false,
@@ -535,16 +535,16 @@ function updateLogViewer(logs, logContent, logCount, previousCount) {
       minute: '2-digit',
       second: '2-digit'
     });
-    
+
     entry.innerHTML = `
       <span class="log-time">${time}</span>
       <span class="log-level ${log.level}">${log.level}</span>
       <span class="log-message">${escapeHtml(log.message)}</span>
     `;
-    
+
     logContent.appendChild(entry);
   }
-  
+
   // Auto-scroll to bottom
   logContent.scrollTop = logContent.scrollHeight;
 }
@@ -630,7 +630,7 @@ startOver.addEventListener('click', () => {
   communityCurlInput.value = '';
   pageTypeInput.value = 'normal';
   analysisModeInput.value = 'with_expected';
-  
+
   // Reset UI
   choiceNormal.classList.remove('selected');
   choiceCommunity.classList.remove('selected');
@@ -642,7 +642,7 @@ startOver.addEventListener('click', () => {
   next2.disabled = true;
   next4.disabled = true;
   validation.innerHTML = '';
-  
+
   goToStep(0);
 });
 
@@ -667,7 +667,7 @@ function dismissLlmPrompt() {
 
 if (llmPromptYes) {
   llmPromptYes.addEventListener('click', () => {
-    window.open('http://localhost:8001?from=rs', '_blank');
+    window.open('/relevancy-framework/llm/?from=rs', '_blank');
   });
 }
 

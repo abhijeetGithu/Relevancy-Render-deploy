@@ -6,10 +6,10 @@ Starts all three applications plus the portal with a single command:
     python launch.py
 
 Services:
-    Portal           -> http://localhost:8000
-    DataQuery_Engine -> http://localhost:5050
-    LLM_Comparator   -> http://localhost:8001
-    relevancy-script -> http://localhost:8002
+    Portal           -> http://localhost:8004
+    DataQuery_Engine -> http://localhost:5051
+    LLM_Comparator   -> http://localhost:8005
+    relevancy-script -> http://localhost:8006
 """
 
 import os
@@ -25,26 +25,26 @@ SERVICES = [
         "name": "DataQuery_Engine",
         "cmd": [sys.executable, "server.py"],
         "cwd": os.path.join(BASE_DIR, "DataQuery_Engine"),
-        "port": 5050,
+        "port": 5051,
         "env": {"DATAQUERY_NO_RELOADER": "1"},
     },
     {
         "name": "LLM_Comparator",
-        "cmd": [sys.executable, "-m", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8001"],
+        "cmd": [sys.executable, "-m", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8005"],
         "cwd": os.path.join(BASE_DIR, "LLM_Comparator", "LLM_Comparator"),
-        "port": 8001,
+        "port": 8005,
     },
     {
         "name": "relevancy-script",
-        "cmd": [sys.executable, "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8002"],
+        "cmd": [sys.executable, "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8006"],
         "cwd": os.path.join(BASE_DIR, "relevancy-script"),
-        "port": 8002,
+        "port": 8006,
     },
     {
         "name": "Portal",
-        "cmd": [sys.executable, "-m", "uvicorn", "portal.app:app", "--host", "0.0.0.0", "--port", "8000"],
+        "cmd": [sys.executable, "-m", "uvicorn", "portal.app:app", "--host", "0.0.0.0", "--port", "8004"],
         "cwd": BASE_DIR,
-        "port": 8000,
+        "port": 8004,
     },
 ]
 
@@ -94,10 +94,10 @@ def print_banner():
     print("  ║         Search Relevancy Suite — Launcher        ║")
     print("  ╠══════════════════════════════════════════════════╣")
     print("  ║                                                  ║")
-    print("  ║   Portal           http://localhost:8000         ║")
-    print("  ║   DataQuery_Engine http://localhost:5050         ║")
-    print("  ║   LLM_Comparator   http://localhost:8001         ║")
-    print("  ║   relevancy-script http://localhost:8002         ║")
+    print("  ║   Portal           http://localhost:8004         ║")
+    print("  ║   DataQuery_Engine http://localhost:5051         ║")
+    print("  ║   LLM_Comparator   http://localhost:8005         ║")
+    print("  ║   relevancy-script http://localhost:8006         ║")
     print("  ║                                                  ║")
     print("  ║   Press Ctrl+C to stop all services              ║")
     print("  ║   Service logs appear below as you use the UI   ║")

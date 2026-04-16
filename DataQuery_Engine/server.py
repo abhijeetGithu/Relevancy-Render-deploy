@@ -570,7 +570,7 @@ def update_config_and_run():
                     cwd=BASE_DIR,
                     capture_output=True,
                     text=True,
-                    timeout=300,  # 5 minute timeout
+                    timeout=400,  # 5 minute timeout
                     env=env
                 )
                 
@@ -788,11 +788,37 @@ def stream_update_config_and_run():
                         env=env
                     )
                     
+                    import threading
+                    import queue
+                    
+                    q = queue.Queue()
+                    
+                    def stream_reader():
+                        try:
+                            for line in iter(proc.stdout.readline, ''):
+                                if line:
+                                    q.put(line)
+                        except Exception:
+                            pass
+                        finally:
+                            try:
+                                q.put(None)
+                            except Exception:
+                                pass
+                                
+                    reader_thread = threading.Thread(target=stream_reader, daemon=True)
+                    reader_thread.start()
+                    
                     # Stream output line by line
                     try:
-                        for line in proc.stdout:
-                            if line:
+                        while True:
+                            try:
+                                line = q.get(timeout=15.0)
+                                if line is None:
+                                    break
                                 yield line if line.endswith('\n') else line + '\n'
+                            except queue.Empty:
+                                yield " KEEP_ALIVE_PING\n"
                     except (GeneratorExit, SystemExit):
                         try:
                             if proc.poll() is None:
@@ -1205,9 +1231,31 @@ def stream_generate_queries_distribution():
             try:
                 proc = subprocess.Popen(cmd, cwd=BASE_DIR, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, 
                                         text=True, bufsize=1, universal_newlines=True, env=env)
+                
+                import threading
+                import queue
+                q = queue.Queue()
+                def stream_reader():
+                    try:
+                        for line in iter(proc.stdout.readline, ''):
+                            if line:
+                                q.put(line)
+                    except Exception:
+                        pass
+                    finally:
+                        try:
+                            q.put(None)
+                        except Exception:
+                            pass
+                reader_thread = threading.Thread(target=stream_reader, daemon=True)
+                reader_thread.start()
+                
                 output_csv = None
-                for line in proc.stdout:
-                    if line:
+                while True:
+                    try:
+                        line = q.get(timeout=15.0)
+                        if line is None:
+                            break
                         if 'OUTPUT_CSV:' in line and output_csv is None:
                             # capture file path
                             parts = line.strip().split('OUTPUT_CSV:',1)
@@ -1216,6 +1264,8 @@ def stream_generate_queries_distribution():
                                 if os.path.exists(candidate):
                                     output_csv = candidate
                         yield line if line.endswith('\n') else line + '\n'
+                    except queue.Empty:
+                        yield " KEEP_ALIVE_PING\n"
                 rc = proc.wait()
                 # If the script wrote to our planned_output temp file, capture it and create a download token
                 if os.path.exists(planned_output):
@@ -1413,9 +1463,31 @@ def stream_generate_queries_single():
 
             try:
                 proc = subprocess.Popen(cmd, cwd=BASE_DIR, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1, universal_newlines=True, env=env)
+                
+                import threading
+                import queue
+                q = queue.Queue()
+                def stream_reader():
+                    try:
+                        for line in iter(proc.stdout.readline, ''):
+                            if line:
+                                q.put(line)
+                    except Exception:
+                        pass
+                    finally:
+                        try:
+                            q.put(None)
+                        except Exception:
+                            pass
+                reader_thread = threading.Thread(target=stream_reader, daemon=True)
+                reader_thread.start()
+                
                 output_csv = None
-                for line in proc.stdout:
-                    if line:
+                while True:
+                    try:
+                        line = q.get(timeout=15.0)
+                        if line is None:
+                            break
                         if 'OUTPUT_CSV:' in line and output_csv is None:
                             parts = line.strip().split('OUTPUT_CSV:',1)
                             if len(parts) == 2:
@@ -1423,6 +1495,8 @@ def stream_generate_queries_single():
                                 if os.path.exists(candidate):
                                     output_csv = candidate
                         yield line if line.endswith('\n') else line + '\n'
+                    except queue.Empty:
+                        yield " KEEP_ALIVE_PING\n"
                 rc = proc.wait()
                 # If the script wrote to our planned_output temp file, capture it and create a download token
                 if os.path.exists(planned_output):
@@ -1693,23 +1767,58 @@ def stream_run_search_evaluation():
 
             eval_env = os.environ.copy()
             eval_env['PYTHONUNBUFFERED'] = '1'
+            logger.info("[Search Evaluation] Streaming Subprocess Starting: %s", ' '.join(cmd))
             proc = subprocess.Popen(cmd, cwd=BASE_DIR, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1, universal_newlines=True, env=eval_env)
+            logger.info("[Search Evaluation] Subprocess PID: %s", proc.pid)
+            
+            import queue
+            import threading
+            
+            q = queue.Queue()
+            
+            def stream_reader():
+                try:
+                    # Read line by line until EOF
+                    for line in iter(proc.stdout.readline, ''):
+                        if line:
+                            q.put(line)
+                except Exception as e:
+                    logger.error(f"[Search Evaluation] stream_reader exception: {e}")
+                finally:
+                    try:
+                        q.put(None)
+                    except Exception:
+                        pass
+            
+            reader_thread = threading.Thread(target=stream_reader, daemon=True)
+            reader_thread.start()
+            
             try:
                 # Read and stream lines as they arrive. If the generator is closed
                 # (client disconnected) or Gunicorn aborts the worker (SystemExit),
                 # ensure the subprocess is terminated so it doesn't keep running.
                 try:
-                    for line in proc.stdout:
-                        if line:
+                    while True:
+                        try:
+                            # 15s timeout to send keep-alive, preventing proxy (e.g., NGINX/ALB) 504 timeouts
+                            line = q.get(timeout=15.0)
+                            if line is None:
+                                break  # EOF reached
                             logger.info("[Search Evaluation] %s", line.rstrip())
                             yield line if line.endswith('\n') else line + '\n'
+                        except queue.Empty:
+                            # Keep-alive heartbeat (invisible or ignored by frontend's `value` processing)
+                            logger.info("[Search Evaluation] Keeping stream alive (15s idle)... PID: %s", proc.pid)
+                            yield " KEEP_ALIVE_PING\n"
                 except (GeneratorExit, SystemExit):
+                    logger.warning("[Search Evaluation] Stream Interrupted (GeneratorExit/SystemExit). Terminating PID %s", proc.pid)
                     # Client disconnected or worker abort; terminate child process
                     try:
                         if proc.poll() is None:
                             proc.terminate()
                             proc.wait(timeout=5)
-                    except Exception:
+                    except Exception as te:
+                        logger.error("[Search Evaluation] Error terminating process: %s", te)
                         try:
                             proc.kill()
                         except Exception:
@@ -1760,7 +1869,9 @@ def stream_run_search_evaluation():
                 yield f"OUTPUT_XLSX_FINAL: {output_xlsx}\n" if os.path.exists(output_xlsx) else ''
                 yield f"EXIT_CODE: {rc}\n"
                 yield "STREAM_DONE\n"
-                logger.info("[Search Evaluation] Stream finished: exit_code=%s", rc)
+                logger.info("[Search Evaluation] Stream finished for PID %s: exit_code=%s", proc.pid, rc)
+                if rc != 0:
+                    logger.warning("[Search Evaluation] Subprocess finished with non-zero exit code: %s", rc)
             finally:
                 # Always attempt to cleanup the subprocess and any temp files. Do not
                 # yield in this block since generator may be closed; just perform cleanup.
@@ -1879,7 +1990,7 @@ def temp_file_columns():
 
 
 # Base URL for LLM Comparator (for Google-only and LLM comparison redirect)
-LLM_COMPARATOR_URL = os.environ.get('LLM_COMPARATOR_URL', 'http://localhost:8001')
+LLM_COMPARATOR_URL = os.environ.get('LLM_COMPARATOR_URL', 'http://localhost:8005')
 
 
 def _llm_comparator_404_message(http_error, base_url):
@@ -2931,10 +3042,33 @@ def stream_update_config_and_run_community():
                         env=env
                     )
                     
+                    import threading
+                    import queue
+                    q = queue.Queue()
+                    def stream_reader():
+                        try:
+                            for line in iter(proc.stdout.readline, ''):
+                                if line:
+                                    q.put(line)
+                        except Exception:
+                            pass
+                        finally:
+                            try:
+                                q.put(None)
+                            except Exception:
+                                pass
+                    reader_thread = threading.Thread(target=stream_reader, daemon=True)
+                    reader_thread.start()
+                    
                     try:
-                        for line in proc.stdout:
-                            if line:
+                        while True:
+                            try:
+                                line = q.get(timeout=15.0)
+                                if line is None:
+                                    break
                                 yield line if line.endswith('\n') else line + '\n'
+                            except queue.Empty:
+                                yield " KEEP_ALIVE_PING\n"
                     except (GeneratorExit, SystemExit):
                         try:
                             if proc.poll() is None:
@@ -3477,11 +3611,11 @@ def stream_run_search_evaluation_community():
 if __name__ == '__main__':
     print("🚀 Starting Document Data Generation Server...")
     print(f"📁 Working directory: {BASE_DIR}")
-    print(f"🌐 Server will be available at: http://localhost:5050")
+    print(f"🌐 Server will be available at: http://localhost:5051")
     print("📋 Make sure your config.json and curl_input.json files are in the same directory")
     print("-" * 60)
     
     # launch.py sets DATAQUERY_NO_RELOADER=1 so process supervision does not
     # mistake Flask's reloader parent exit for a crash.
     use_reloader = os.environ.get('DATAQUERY_NO_RELOADER') != '1'
-    app.run(debug=True, host='0.0.0.0', port=5050, use_reloader=use_reloader)
+    app.run(debug=True, host='0.0.0.0', port=5051, use_reloader=use_reloader)

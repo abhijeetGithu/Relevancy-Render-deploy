@@ -1241,7 +1241,7 @@
                 <span class="truncate">Search Relevancy Tool</span>
             </div>
             <div class="wizard-nav-actions flex flex-wrap gap-2 sm:gap-3 justify-end">
-                <a href="http://localhost:8000"
+                <a href="http://localhost:8004"
                     class="btn secondary inline-flex items-center gap-2 no-underline px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-100 font-medium transition-colors text-sm sm:text-base">
                     <svg class="flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1306,7 +1306,8 @@
                 <div class="panel bg-bg-card rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-600 shadow-xl">
                     <h2
                         class="text-lg sm:text-xl font-semibold text-gray-50 mb-2 flex items-center gap-2 sm:gap-3 flex-wrap">
-                        <span class="text-xl sm:text-2xl">🌐</span> Select Page Type</h2>
+                        <span class="text-xl sm:text-2xl">🌐</span> Select Page Type
+                    </h2>
                     <p class="text-gray-400 mb-6">Choose the type of search page you want to extract documents from.</p>
 
                     <div class="workflow-options grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -1346,7 +1347,8 @@
                 <div class="panel bg-bg-card rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-600 shadow-xl">
                     <h2
                         class="text-lg sm:text-xl font-semibold text-gray-50 mb-2 flex items-center gap-2 sm:gap-3 flex-wrap">
-                        <span class="text-xl sm:text-2xl">📋</span> Curl Command Configuration</h2>
+                        <span class="text-xl sm:text-2xl">📋</span> Curl Command Configuration
+                    </h2>
                     <p id="curlTypeHint" class="text-gray-400 mb-4">Paste your curl command for the selected page type.
                     </p>
 
@@ -1415,7 +1417,8 @@
                 <div class="panel bg-bg-card rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-600 shadow-xl">
                     <h2
                         class="text-lg sm:text-xl font-semibold text-gray-50 mb-2 flex items-center gap-2 sm:gap-3 flex-wrap">
-                        <span class="text-xl sm:text-2xl">📂</span> Content Mode</h2>
+                        <span class="text-xl sm:text-2xl">📂</span> Content Mode
+                    </h2>
                     <p class="text-gray-400 mb-6">Choose how you want to extract documents.</p>
 
                     <div class="workflow-options grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1528,7 +1531,8 @@
                     <h2
                         class="text-lg sm:text-xl font-semibold text-gray-50 mb-2 flex items-center gap-2 sm:gap-3 flex-wrap">
                         <span class="text-xl sm:text-2xl">⚙️</span> Content Sources Configuration <span
-                            id="extractSourcesPageTypeLabel" class="text-sm text-gray-400 font-normal"></span></h2>
+                            id="extractSourcesPageTypeLabel" class="text-sm text-gray-400 font-normal"></span>
+                    </h2>
                     <p id="extractSourcesHint" class="text-gray-400 mb-4"></p>
                     <div id="sourceForms" class="content-source-wrapper"></div>
                     <button type="button"
@@ -1560,7 +1564,8 @@
                 <div class="panel bg-bg-card rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-600 shadow-xl">
                     <h2
                         class="text-lg sm:text-xl font-semibold text-gray-50 mb-2 flex items-center gap-2 sm:gap-3 flex-wrap">
-                        <span class="text-xl sm:text-2xl">🚀</span> Run Document Extraction</h2>
+                        <span class="text-xl sm:text-2xl">🚀</span> Run Document Extraction
+                    </h2>
                     <p class="text-gray-400 mb-6">Execute extraction with your configured settings.</p>
 
                     <div class="button-row flex flex-wrap gap-3 mt-4">
@@ -1609,7 +1614,8 @@
                 <div class="panel bg-bg-card rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-600 shadow-xl">
                     <h2
                         class="text-lg sm:text-xl font-semibold text-gray-50 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3 flex-wrap">
-                        <span class="text-xl sm:text-2xl">🧠</span> Generate Search Queries</h2>
+                        <span class="text-xl sm:text-2xl">🧠</span> Generate Search Queries
+                    </h2>
 
                     <!-- API Configuration -->
                     <div class="api-config rounded-2xl p-4 sm:p-6 mb-6 bg-gradient-to-r from-primary to-secondary">
@@ -1644,7 +1650,8 @@
                     <!-- Source file is auto-passed from extraction -->
                     <div class="file-upload-section rounded-2xl p-4 sm:p-6 mb-6 border border-gray-600 bg-bg-card">
                         <h3 class="text-base sm:text-lg font-semibold text-gray-50 mb-3">Source File</h3>
-                        <p class="text-sm text-gray-400 mb-4">The extracted CSV is passed automatically from the previous step.</p>
+                        <p class="text-sm text-gray-400 mb-4">The extracted CSV is passed automatically from the
+                            previous step.</p>
                         <div id="uploadedFileInfo"
                             style="padding:10px;background:var(--bg-dark);border-radius:6px;display:flex;align-items:center;gap:10px;">
                             <span style="color:var(--success);font-size:18px;">✓</span>
@@ -1819,7 +1826,8 @@
                                     <input type="text" id="googleSearchSiteDomain"
                                         class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-600 text-gray-100 text-sm"
                                         placeholder="e.g. docs.searchunify.com">
-                                    <p class="text-xs text-gray-500 mt-1">Required for Web Scraper. Restricts Google results to this site (appends site:domain to each query)</p>
+                                    <p class="text-xs text-gray-500 mt-1">Required for Web Scraper. Restricts Google
+                                        results to this site (appends site:domain to each query)</p>
                                 </div>
                             </div>
                             <div class="flex flex-wrap gap-3">
@@ -1857,8 +1865,13 @@
                 <div class="panel bg-bg-card rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-600 shadow-xl">
                     <h2
                         class="text-lg sm:text-xl font-semibold text-gray-50 mb-2 flex items-center gap-2 sm:gap-3 flex-wrap">
-                        <span class="text-xl sm:text-2xl">🔑</span> Search Evaluation setup</h2>
-                    <p class="text-gray-400 mb-6">You opened Search Evaluation with your own data. Provide your <strong class="text-gray-300">search API curl</strong> (used when you run Search Evaluation), plus <strong class="text-gray-300">LLM provider, API key, and optional model</strong> for LLM Comparison (same pattern as Generate Queries when you use that flow).</p>
+                        <span class="text-xl sm:text-2xl">🔑</span> Search Evaluation setup
+                    </h2>
+                    <p class="text-gray-400 mb-6">You opened Search Evaluation with your own data. Provide your <strong
+                            class="text-gray-300">search API curl</strong> (used when you run Search Evaluation), plus
+                        <strong class="text-gray-300">LLM provider, API key, and optional model</strong> for LLM
+                        Comparison (same pattern as Generate Queries when you use that flow).
+                    </p>
 
                     <div class="api-config rounded-2xl p-4 sm:p-6 mb-4 bg-gradient-to-r from-primary to-secondary">
                         <h3 class="text-base sm:text-lg font-semibold text-white mb-4">API Configuration</h3>
@@ -1891,22 +1904,29 @@
 
                     <div class="p-4 sm:p-6 rounded-2xl border border-gray-600 bg-bg-dark">
                         <h3 class="text-base font-semibold text-gray-50 mb-2">Search API (cURL)</h3>
-                        <p class="text-sm text-gray-400 mb-4">Paste the cURL copied from your browser (DevTools → Copy as cURL). It is parsed and stored on the server the same way as in <strong class="text-gray-400">Extract Documents</strong>, and is required to run Search Evaluation against your API.</p>
+                        <p class="text-sm text-gray-400 mb-4">Paste the cURL copied from your browser (DevTools → Copy
+                            as cURL). It is parsed and stored on the server the same way as in <strong
+                                class="text-gray-400">Extract Documents</strong>, and is required to run Search
+                            Evaluation against your API.</p>
                         <div class="flex flex-wrap gap-6 mb-4">
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="evalEntrySearchPageType" value="normal" checked class="rounded" onchange="updateEvalEntryCurlHint()">
+                                <input type="radio" name="evalEntrySearchPageType" value="normal" checked
+                                    class="rounded" onchange="updateEvalEntryCurlHint()">
                                 <span class="text-gray-300 text-sm">Normal page (JSON)</span>
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="evalEntrySearchPageType" value="community" class="rounded" onchange="updateEvalEntryCurlHint()">
+                                <input type="radio" name="evalEntrySearchPageType" value="community" class="rounded"
+                                    onchange="updateEvalEntryCurlHint()">
                                 <span class="text-gray-300 text-sm">Community page (form-encoded)</span>
                             </label>
                         </div>
-                        <label for="evalEntryCurlCommand" class="block text-sm font-medium text-gray-300 mb-2">cURL command *</label>
+                        <label for="evalEntryCurlCommand" class="block text-sm font-medium text-gray-300 mb-2">cURL
+                            command *</label>
                         <textarea id="evalEntryCurlCommand" rows="7"
                             class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-600 text-gray-100 text-xs sm:text-sm font-mono"
                             placeholder="curl 'https://your-search-api/...' -H 'Content-Type: application/json' ..."></textarea>
-                        <p id="evalEntryCurlHint" class="text-xs text-gray-500 mt-2">JSON body search request (application/json). Switch to Community if your endpoint uses form POST.</p>
+                        <p id="evalEntryCurlHint" class="text-xs text-gray-500 mt-2">JSON body search request
+                            (application/json). Switch to Community if your endpoint uses form POST.</p>
                     </div>
                 </div>
 
@@ -1926,7 +1946,8 @@
                 <div class="panel bg-bg-card rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-600 shadow-xl">
                     <h2
                         class="text-lg sm:text-xl font-semibold text-gray-50 mb-2 flex items-center gap-2 sm:gap-3 flex-wrap">
-                        <span class="text-xl sm:text-2xl">🌐</span> Select Page Type</h2>
+                        <span class="text-xl sm:text-2xl">🌐</span> Select Page Type
+                    </h2>
                     <p class="text-gray-400 mb-6">Choose the type of search page you want to evaluate.</p>
 
                     <div class="workflow-options grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -1970,21 +1991,27 @@
                 <div class="panel bg-bg-card rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-600 shadow-xl">
                     <h2
                         class="text-lg sm:text-xl font-semibold text-gray-50 mb-2 flex items-center gap-2 sm:gap-3 flex-wrap">
-                        <span class="text-xl sm:text-2xl">📊</span> Select Input Data Type</h2>
-                    <p class="text-gray-400 mb-6">Choose whether your sheet has expected results (ground truth) or only queries.</p>
+                        <span class="text-xl sm:text-2xl">📊</span> Select Input Data Type
+                    </h2>
+                    <p class="text-gray-400 mb-6">Choose whether your sheet has expected results (ground truth) or only
+                        queries.</p>
 
                     <div class="workflow-options grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div class="workflow-card bg-bg-dark border-2 border-gray-600 rounded-2xl p-4 sm:p-6 md:p-8 cursor-pointer transition-all duration-300 hover:border-primary hover:shadow-glow text-center min-w-0"
                             id="evalDataTypeGroundTruth" onclick="selectEvalDataType('ground_truth')">
                             <div class="workflow-card-icon text-5xl mb-4">🎯</div>
-                            <div class="workflow-card-title text-lg font-semibold text-gray-50 mb-2">Ground Truth Sheet</div>
-                            <div class="workflow-card-desc text-sm text-gray-400">Has Query + Expected Title/URL. Enables recall-style evaluation.</div>
+                            <div class="workflow-card-title text-lg font-semibold text-gray-50 mb-2">Ground Truth Sheet
+                            </div>
+                            <div class="workflow-card-desc text-sm text-gray-400">Has Query + Expected Title/URL.
+                                Enables recall-style evaluation.</div>
                         </div>
                         <div class="workflow-card bg-bg-dark border-2 border-gray-600 rounded-2xl p-4 sm:p-6 md:p-8 cursor-pointer transition-all duration-300 hover:border-primary hover:shadow-glow text-center min-w-0"
                             id="evalDataTypeQueryOnly" onclick="selectEvalDataType('query_only')">
                             <div class="workflow-card-icon text-5xl mb-4">📝</div>
-                            <div class="workflow-card-title text-lg font-semibold text-gray-50 mb-2">Query Only Sheet</div>
-                            <div class="workflow-card-desc text-sm text-gray-400">Has Query column only. Runs search, Google, and LLM comparison without recall.</div>
+                            <div class="workflow-card-title text-lg font-semibold text-gray-50 mb-2">Query Only Sheet
+                            </div>
+                            <div class="workflow-card-desc text-sm text-gray-400">Has Query column only. Runs search,
+                                Google, and LLM comparison without recall.</div>
                         </div>
                     </div>
 
@@ -2008,11 +2035,13 @@
                     <h2
                         class="text-lg sm:text-xl font-semibold text-gray-50 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3 flex-wrap">
                         <span class="text-xl sm:text-2xl">🕵️</span> Search Evaluation <span id="evalPageTypeLabel"
-                            class="text-sm text-primary ml-3"></span></h2>
+                            class="text-sm text-primary ml-3"></span>
+                    </h2>
 
                     <!-- File Upload: CSV or Excel (.xlsx / .xlsm / .xls) -->
                     <div class="file-upload-section">
-                        <h3 id="evalUploadTitle" class="text-base sm:text-lg font-medium text-gray-50 mb-2">Upload Evaluation Sheet</h3>
+                        <h3 id="evalUploadTitle" class="text-base sm:text-lg font-medium text-gray-50 mb-2">Upload
+                            Evaluation Sheet</h3>
                         <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
                             <input type="file" id="searchEvalUploadFile"
                                 accept=".csv,.xlsx,.xlsm,.xls,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -2021,7 +2050,8 @@
                                 class="btn w-full sm:w-auto px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-medium text-center flex-shrink-0"
                                 onclick="uploadSearchEvalFile()">Upload & Parse</button>
                         </div>
-                        <div id="evalUploadHint" class="small-text" style="margin-top:8px;">Upload a CSV (.csv) or Excel (.xlsx, .xlsm, or .xls). The first worksheet is used for Excel files.</div>
+                        <div id="evalUploadHint" class="small-text" style="margin-top:8px;">Upload a CSV (.csv) or Excel
+                            (.xlsx, .xlsm, or .xls). The first worksheet is used for Excel files.</div>
 
                         <div id="searchEvalColumnSection" class="hidden"
                             style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
@@ -2069,41 +2099,57 @@
                                 <input type="checkbox" id="autoStepLlm" disabled>
                                 <span>
                                     <span class="auto-step-label-text">Run LLM Comparison</span>
-                                    <span class="auto-step-llm-hint" id="autoStepLlmHint">Turn on both steps above to enable LLM Comparison.</span>
+                                    <span class="auto-step-llm-hint" id="autoStepLlmHint">Turn on both steps above to
+                                        enable LLM Comparison.</span>
                                 </span>
                             </label>
                         </div>
 
                         <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
-                            <button class="btn w-full sm:w-auto px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-medium"
+                            <button
+                                class="btn w-full sm:w-auto px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-medium"
                                 id="searchEvalAutoRunBtn" onclick="runSelectedEvaluationSteps()">
                                 <span id="searchEvalAutoRunText">Run Selected Steps</span>
                                 <span id="searchEvalAutoRunLoadingSpinner" class="loading hidden"></span>
                             </button>
-                            <span class="text-xs text-gray-500">Selected steps run sequentially in this order: Search Evaluation -> Google -> LLM.</span>
+                            <span class="text-xs text-gray-500">Selected steps run sequentially in this order: Search
+                                Evaluation -> Google -> LLM.</span>
                         </div>
 
-                        <div id="searchEvalAutoStatusPanel" class="mt-3 p-3 rounded-lg border border-gray-700 bg-gray-900 hidden">
-                            <div id="autoStatusSearchEval" class="text-sm text-gray-300 mb-1">Search Evaluation: Pending</div>
-                            <div id="autoStatusGoogle" class="text-sm text-gray-300 mb-1">Google Search Result: Pending</div>
+                        <div id="searchEvalAutoStatusPanel"
+                            class="mt-3 p-3 rounded-lg border border-gray-700 bg-gray-900 hidden">
+                            <div id="autoStatusSearchEval" class="text-sm text-gray-300 mb-1">Search Evaluation: Pending
+                            </div>
+                            <div id="autoStatusGoogle" class="text-sm text-gray-300 mb-1">Google Search Result: Pending
+                            </div>
                             <div id="autoStatusLlm" class="text-sm text-gray-300">LLM Comparison: Pending</div>
                         </div>
-                        <p class="text-xs text-gray-500 mt-2"><span id="evalLlmSourceHintText">LLM Comparison uses the same Provider and Model as the Query Generation step.</span> Current: <span id="evalLlmModelHint">—</span></p>
+                        <p class="text-xs text-gray-500 mt-2"><span id="evalLlmSourceHintText">LLM Comparison uses the
+                                same Provider and Model as the Query Generation step.</span> Current: <span
+                                id="evalLlmModelHint">—</span></p>
                     </div>
 
-                    <div id="evalLlmPromptSection" class="hidden mt-4 p-4 rounded-xl bg-bg-dark border border-indigo-500/30">
+                    <div id="evalLlmPromptSection"
+                        class="hidden mt-4 p-4 rounded-xl bg-bg-dark border border-indigo-500/30">
                         <h4 class="text-sm font-semibold text-indigo-300 mb-2">LLM per-query judge prompt</h4>
-                        <p class="text-xs text-gray-500 mb-2">Used to score SearchUnify vs Google result lists (strict rubric below). Clear the box to use the built-in strict default from the server. The batch &quot;Final Analysis&quot; uses a separate strict summary prompt automatically.</p>
-                        <textarea id="evalLlmPromptText" rows="12" class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-600 text-gray-100 text-sm font-mono" placeholder="Clear to use server default (strict auditor)..."></textarea>
+                        <p class="text-xs text-gray-500 mb-2">Used to score SearchUnify vs Google result lists (strict
+                            rubric below). Clear the box to use the built-in strict default from the server. The batch
+                            &quot;Final Analysis&quot; uses a separate strict summary prompt automatically.</p>
+                        <textarea id="evalLlmPromptText" rows="12"
+                            class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-600 text-gray-100 text-sm font-mono"
+                            placeholder="Clear to use server default (strict auditor)..."></textarea>
                         <div id="evalLlmProgressWrap" class="hidden mt-3">
                             <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
-                                <div id="evalLlmProgressBar" class="h-2 bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-300" style="width:0%"></div>
+                                <div id="evalLlmProgressBar"
+                                    class="h-2 bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-300"
+                                    style="width:0%"></div>
                             </div>
                             <div id="evalLlmProgressLabel" class="text-xs text-gray-400 mt-1"></div>
                         </div>
                     </div>
 
-                    <div class="mt-4 p-4 rounded-xl bg-bg-dark border border-gray-600 hidden" id="evalGoogleOptionsSection">
+                    <div class="mt-4 p-4 rounded-xl bg-bg-dark border border-gray-600 hidden"
+                        id="evalGoogleOptionsSection">
                         <h4 class="text-sm font-semibold text-gray-50 mb-3">Google Search Method</h4>
                         <div class="flex flex-wrap gap-4 mb-3">
                             <label class="flex items-center gap-2 cursor-pointer">
@@ -2111,75 +2157,105 @@
                                 <span class="text-gray-300">Google Search API</span>
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="evalGoogleSearchMethod" value="scraper" checked class="rounded">
+                                <input type="radio" name="evalGoogleSearchMethod" value="scraper" checked
+                                    class="rounded">
                                 <span class="text-gray-300">Web Scraper</span>
                             </label>
                         </div>
                         <div id="evalGoogleApiFields" class="hidden grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                             <div>
                                 <label class="block text-sm text-gray-400 mb-1">Google API Key *</label>
-                                <input type="password" id="evalGoogleApiKey" class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-600 text-gray-100 text-sm" placeholder="Custom Search API key">
+                                <input type="password" id="evalGoogleApiKey"
+                                    class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-600 text-gray-100 text-sm"
+                                    placeholder="Custom Search API key">
                             </div>
                             <div>
                                 <label class="block text-sm text-gray-400 mb-1">CSE ID *</label>
-                                <input type="text" id="evalGoogleCseId" class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-600 text-gray-100 text-sm" placeholder="Custom Search Engine ID">
+                                <input type="text" id="evalGoogleCseId"
+                                    class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-600 text-gray-100 text-sm"
+                                    placeholder="Custom Search Engine ID">
                             </div>
                         </div>
                         <div id="evalGoogleScraperFields" class="mb-1">
                             <label class="block text-sm text-gray-400 mb-1">Docs Site Domain *</label>
-                            <input type="text" id="evalGoogleSiteDomain" class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-600 text-gray-100 text-sm" placeholder="e.g. docs.searchunify.com">
-                            <p class="text-xs text-gray-500 mt-1">Required for Google Search Result when using Web Scraper. Appended to each query (site:domain).</p>
+                            <input type="text" id="evalGoogleSiteDomain"
+                                class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-600 text-gray-100 text-sm"
+                                placeholder="e.g. docs.searchunify.com">
+                            <p class="text-xs text-gray-500 mt-1">Required for Google Search Result when using Web
+                                Scraper. Appended to each query (site:domain).</p>
                         </div>
                     </div>
 
                     <div class="button-row flex flex-col sm:flex-row flex-wrap gap-3 mt-4">
                         <button class="btn secondary hidden w-full sm:w-auto text-center px-5 py-2.5 rounded-lg"
-                            id="downloadSearchEvalBtn" onclick="downloadSearchEvalResult()" disabled>Download SU Search Evaluation</button>
+                            id="downloadSearchEvalBtn" onclick="downloadSearchEvalResult()" disabled>Download SU Search
+                            Evaluation</button>
                         <button class="btn secondary hidden w-full sm:w-auto text-center px-5 py-2.5 rounded-lg"
-                            id="downloadEvalGoogleBtn" onclick="downloadEvalGoogleResult()" disabled>Download Google Result</button>
+                            id="downloadEvalGoogleBtn" onclick="downloadEvalGoogleResult()" disabled>Download Google
+                            Result</button>
                         <button class="btn secondary hidden w-full sm:w-auto text-center px-5 py-2.5 rounded-lg"
-                            id="downloadEvalLlmBtn" onclick="downloadEvalLlmResult()" disabled>Download LLM Comparison</button>
+                            id="downloadEvalLlmBtn" onclick="downloadEvalLlmResult()" disabled>Download LLM
+                            Comparison</button>
                     </div>
 
                     <div id="evalExecutionOutputs" class="mt-6 space-y-4 hidden">
                         <h3 class="text-base font-semibold text-gray-50 mb-2">Execution output by step</h3>
-                        <div id="outputEvalStepSearchWrap" class="output-section rounded-xl border border-gray-700 bg-gray-900/50 p-3">
+                        <div id="outputEvalStepSearchWrap"
+                            class="output-section rounded-xl border border-gray-700 bg-gray-900/50 p-3">
                             <h4 class="text-sm font-medium text-emerald-400 mb-2">1. Search Evaluation</h4>
-                            <pre id="outputEvalSearchEval" class="output-content text-xs max-h-48 overflow-auto whitespace-pre-wrap break-words"></pre>
+                            <pre id="outputEvalSearchEval"
+                                class="output-content text-xs max-h-48 overflow-auto whitespace-pre-wrap break-words"></pre>
                         </div>
-                        <div id="outputEvalStepGoogleWrap" class="output-section rounded-xl border border-gray-700 bg-gray-900/50 p-3">
+                        <div id="outputEvalStepGoogleWrap"
+                            class="output-section rounded-xl border border-gray-700 bg-gray-900/50 p-3">
                             <h4 class="text-sm font-medium text-amber-400 mb-2">2. Google Search Result</h4>
-                            <pre id="outputEvalGoogle" class="output-content text-xs max-h-48 overflow-auto whitespace-pre-wrap break-words"></pre>
+                            <pre id="outputEvalGoogle"
+                                class="output-content text-xs max-h-48 overflow-auto whitespace-pre-wrap break-words"></pre>
                         </div>
-                        <div id="outputEvalStepLlmWrap" class="output-section rounded-xl border border-gray-700 bg-gray-900/50 p-3">
+                        <div id="outputEvalStepLlmWrap"
+                            class="output-section rounded-xl border border-gray-700 bg-gray-900/50 p-3">
                             <h4 class="text-sm font-medium text-indigo-400 mb-2">3. LLM Comparison</h4>
-                            <pre id="outputEvalLlm" class="output-content text-xs max-h-64 overflow-auto whitespace-pre-wrap break-words"></pre>
+                            <pre id="outputEvalLlm"
+                                class="output-content text-xs max-h-64 overflow-auto whitespace-pre-wrap break-words"></pre>
                         </div>
-                        <div id="evalLlmStructuredWrap" class="hidden mt-4 rounded-xl border border-indigo-500/30 bg-gray-900/40 p-4">
+                        <div id="evalLlmStructuredWrap"
+                            class="hidden mt-4 rounded-xl border border-indigo-500/30 bg-gray-900/40 p-4">
                             <h4 class="text-sm font-semibold text-indigo-300 mb-3">Query-wise analysis (summary)</h4>
                             <div id="evalLlmStructuredCards" class="space-y-3 max-h-[480px] overflow-y-auto"></div>
                         </div>
-                        <div id="evalLlmFinalWrap" class="hidden mt-4 rounded-xl border border-teal-500/35 bg-gray-900/50 p-4">
+                        <div id="evalLlmFinalWrap"
+                            class="hidden mt-4 rounded-xl border border-teal-500/35 bg-gray-900/50 p-4">
                             <h4 class="text-sm font-semibold text-teal-300 mb-3">Final batch analysis</h4>
-                            <p class="text-xs text-gray-500 mb-3">Overall comparison across all queries (also saved in the Excel workbook tab &quot;Final Analysis&quot;).</p>
-                            <div id="evalLlmFinalExecutive" class="text-sm text-gray-100 whitespace-pre-wrap break-words mb-4 p-3 rounded-lg bg-gray-950/80 border border-gray-700"></div>
+                            <p class="text-xs text-gray-500 mb-3">Overall comparison across all queries (also saved in
+                                the Excel workbook tab &quot;Final Analysis&quot;).</p>
+                            <div id="evalLlmFinalExecutive"
+                                class="text-sm text-gray-100 whitespace-pre-wrap break-words mb-4 p-3 rounded-lg bg-gray-950/80 border border-gray-700">
+                            </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div class="rounded-lg border border-gray-700 bg-gray-950/60 p-3">
-                                    <h5 class="text-xs font-semibold text-emerald-400 mb-2 uppercase tracking-wide">Performed well</h5>
-                                    <ul id="evalLlmFinalWell" class="list-disc list-inside text-sm text-gray-200 space-y-1"></ul>
+                                    <h5 class="text-xs font-semibold text-emerald-400 mb-2 uppercase tracking-wide">
+                                        Performed well</h5>
+                                    <ul id="evalLlmFinalWell"
+                                        class="list-disc list-inside text-sm text-gray-200 space-y-1"></ul>
                                 </div>
                                 <div class="rounded-lg border border-gray-700 bg-gray-950/60 p-3">
-                                    <h5 class="text-xs font-semibold text-rose-400 mb-2 uppercase tracking-wide">Performed poorly</h5>
-                                    <ul id="evalLlmFinalPoor" class="list-disc list-inside text-sm text-gray-200 space-y-1"></ul>
+                                    <h5 class="text-xs font-semibold text-rose-400 mb-2 uppercase tracking-wide">
+                                        Performed poorly</h5>
+                                    <ul id="evalLlmFinalPoor"
+                                        class="list-disc list-inside text-sm text-gray-200 space-y-1"></ul>
                                 </div>
                             </div>
                             <div class="mb-4 rounded-lg border border-gray-700 bg-gray-950/60 p-3">
-                                <h5 class="text-xs font-semibold text-indigo-400 mb-2 uppercase tracking-wide">SearchUnify vs Google</h5>
-                                <div id="evalLlmFinalVersus" class="text-sm text-gray-200 whitespace-pre-wrap break-words"></div>
+                                <h5 class="text-xs font-semibold text-indigo-400 mb-2 uppercase tracking-wide">
+                                    SearchUnify vs Google</h5>
+                                <div id="evalLlmFinalVersus"
+                                    class="text-sm text-gray-200 whitespace-pre-wrap break-words"></div>
                             </div>
                             <div class="rounded-lg border border-gray-700 bg-gray-950/60 p-3">
-                                <h5 class="text-xs font-semibold text-amber-400 mb-2 uppercase tracking-wide">Recommendations</h5>
-                                <ul id="evalLlmFinalRecs" class="list-disc list-inside text-sm text-gray-200 space-y-1"></ul>
+                                <h5 class="text-xs font-semibold text-amber-400 mb-2 uppercase tracking-wide">
+                                    Recommendations</h5>
+                                <ul id="evalLlmFinalRecs" class="list-disc list-inside text-sm text-gray-200 space-y-1">
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -2203,7 +2279,7 @@
                         <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
                             <button
                                 class="btn success w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg"
-                                onclick="window.open('http://localhost:8001?from=dqe', '_blank')">
+                                onclick="window.open('/relevancy-framework/llm/?from=dqe', '_blank')">
                                 Yes, Open LLM Comparator
                                 <svg class="flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2">
@@ -2502,7 +2578,7 @@
 
             if (pageType === 'community') {
                 // Check if community curl exists
-                fetch('/api/get-community-curl')
+                fetch(apiUrl('/api/get-community-curl'))
                     .then(r => r.json())
                     .then(data => {
                         if (data.success && data.curl_community && data.curl_community.url) {
@@ -2522,7 +2598,7 @@
                     });
             } else {
                 // Check if normal curl exists
-                fetch('/api/get-curl-input')
+                fetch(apiUrl('/api/get-curl-input'))
                     .then(r => r.json())
                     .then(data => {
                         if (data.success && data.curl_input && data.curl_input.url) {
@@ -2599,7 +2675,7 @@
             }
 
             try {
-                const response = await fetch('/api/update-community-curl', {
+                const response = await fetch(apiUrl('/api/update-community-curl'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ rawCurl: curlText })
@@ -2744,8 +2820,8 @@
 
             // Auto-detect: if URL path ends with a known pattern, extract base
             const path = window.location.pathname;
-            // If we're at root or the path is just the HTML file, use empty base
-            if (path === '/' || path === '/frontend.html' || path.endsWith('/frontend.html')) {
+            // Always extract base path from window.location.pathname
+            if (true) {
                 const base = path.replace(/\/?frontend\.html$/, '').replace(/\/$/, '');
                 return base;
             }
@@ -2760,7 +2836,7 @@
             return API_BASE + cleanEndpoint;
         }
         // LLM Comparator base URL (for "LLM Comparison" and Google-only backend call)
-        const LLM_COMPARATOR_URL = 'http://localhost:8001';
+        const LLM_COMPARATOR_URL = '/relevancy-framework/llm/';
         // ==================== END API BASE URL CONFIGURATION ====================
 
         let contentSources = [];
@@ -3256,8 +3332,11 @@ ${removeBtn}
                                     return;
                                 }
                                 const chunk = decoder.decode(value, { stream: true });
-                                outEl.textContent += chunk;
-                                outEl.scrollTop = outEl.scrollHeight;
+                                let displayChunk = chunk.replace(/ KEEP_ALIVE_PING\n/g, '');
+                                if (displayChunk) {
+                                    outEl.textContent += displayChunk;
+                                    outEl.scrollTop = outEl.scrollHeight;
+                                }
 
                                 chunk.split('\n').forEach(line => {
                                     if (line.startsWith('COMBINED_DOWNLOAD_TOKEN:')) {
@@ -3796,7 +3875,8 @@ ${removeBtn}
                             return;
                         }
                         const chunk = decoder.decode(value, { stream: true });
-                        processQueryStreamChunk(chunk, outEl, dlBtn);
+                        let displayChunk = chunk.replace(/ KEEP_ALIVE_PING\n/g, '');
+                        processQueryStreamChunk(displayChunk, outEl, dlBtn);
                         read();
                     }).catch(err => { setQueryLoading('distribution', false); showStatus('Stream error: ' + err.message, 'error'); });
                 }
@@ -3840,7 +3920,8 @@ ${removeBtn}
                             return;
                         }
                         const chunk = decoder.decode(value, { stream: true });
-                        processQueryStreamChunk(chunk, outEl, dlBtn);
+                        let displayChunk = chunk.replace(/ KEEP_ALIVE_PING\n/g, '');
+                        processQueryStreamChunk(displayChunk, outEl, dlBtn);
                         read();
                     }).catch(err => { setQueryLoading('single', false); showStatus('Stream error: ' + err.message, 'error'); });
                 }
@@ -4065,7 +4146,7 @@ ${removeBtn}
         }
 
         function openLlmComparison() {
-            const base = (typeof LLM_COMPARATOR_URL !== 'undefined') ? LLM_COMPARATOR_URL : 'http://localhost:8001';
+            const base = (typeof LLM_COMPARATOR_URL !== 'undefined') ? LLM_COMPARATOR_URL : '/relevancy-framework/llm/';
             window.open(base + '?from=dqe', '_blank');
         }
 
@@ -4564,7 +4645,7 @@ ${removeBtn}
                         } catch (_) {
                             msg = txt || msg;
                         }
-                    } catch (_) {}
+                    } catch (_) { }
                     throw new Error(msg);
                 }
                 if (!response.body) throw new Error('ReadableStream not supported');
@@ -4572,13 +4653,16 @@ ${removeBtn}
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
                 let buffer = '';
+                let streamDoneFound = false;
+                let exitCodeFound = null;
 
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) break;
                     const chunk = decoder.decode(value, { stream: true });
-                    if (outEl) {
-                        outEl.textContent += chunk;
+                    let displayChunk = chunk.replace(/ KEEP_ALIVE_PING\n/g, '');
+                    if (outEl && displayChunk) {
+                        outEl.textContent += displayChunk;
                         outEl.scrollTop = outEl.scrollHeight;
                     }
 
@@ -4606,6 +4690,10 @@ ${removeBtn}
                                 dlBtn.classList.remove('hidden');
                                 if (!fromAutomation) showStatus('Search evaluation completed!', 'success');
                             }
+                        } else if (l.includes('STREAM_DONE')) {
+                            streamDoneFound = true;
+                        } else if (l.startsWith('EXIT_CODE:')) {
+                            exitCodeFound = l.split('EXIT_CODE:')[1].trim();
                         }
                     });
                 }
@@ -4614,7 +4702,14 @@ ${removeBtn}
                     if (fromAutomation) showStatus('Search evaluation completed.', 'success');
                     return true;
                 }
-                showStatus('Search evaluation finished without output token.', 'error');
+
+                if (streamDoneFound && exitCodeFound !== null && exitCodeFound !== '0') {
+                    showStatus('Search evaluation script failed with exit code ' + exitCodeFound, 'error');
+                } else if (!streamDoneFound) {
+                    showStatus('Search evaluation stream interrupted unexpectedly.', 'error');
+                } else {
+                    showStatus('Search evaluation finished without output token.', 'error');
+                }
                 return false;
             } catch (err) {
                 showStatus('Error: ' + err.message, 'error');
@@ -4847,7 +4942,7 @@ ${removeBtn}
                 });
                 if (!response.ok) {
                     let msg = 'Request failed';
-                    try { msg = await response.text(); } catch (_) {}
+                    try { msg = await response.text(); } catch (_) { }
                     throw new Error(msg || 'Request failed');
                 }
                 if (!response.body) throw new Error('Streaming not supported');

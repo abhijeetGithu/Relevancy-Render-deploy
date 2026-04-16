@@ -10,8 +10,8 @@ queries = [
     'Top Rated Graph Tiles site:docs.searchunify.com',
 ]
 
-url = 'http://localhost:8001/api/google-only'
-print('Running Google timing test against http://localhost:8001/api/google-only')
+url = 'http://localhost:8005/api/google-only'
+print('Running Google timing test against http://localhost:8005/api/google-only')
 print(f"{'#':<2} | {'Query (with site filter)':<90} | {'Time(ms)':<9} | {'HTTP':<5} | {'Rows':<8}")
 print('-' * 130)
 

@@ -22,6 +22,11 @@ _browser_instance = None
 _browser_lock = asyncio.Lock()
 _query_count = 0
 
+# Adaptive throttling state – shared across queries in a single run
+_captcha_hit_in_run = False
+_consecutive_captcha_failures = 0
+_session_refresh_count = 0
+
 # User-Agent pool for rotation
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
@@ -126,7 +131,7 @@ def _get_browser(progress_callback: Optional[Callable[[Dict[str, Any]], None]] =
         options.add_argument("--disable-features=IsolateOrigins,site-per-process")
         options.add_argument("--disable-gpu")
 
-        # Docker/production: set CHROME_BIN=/usr/bin/chromium (see LLM Comparator Dockerfile)
+        # Docker/production: set CHROME_BIN=/usr/bin/google-chrome-stable (see LLM Comparator Dockerfile)
         chrome_bin = (os.environ.get("CHROME_BIN") or os.environ.get("GOOGLE_CHROME_BIN") or "").strip()
         if chrome_bin:
             options.binary_location = chrome_bin
@@ -134,7 +139,7 @@ def _get_browser(progress_callback: Optional[Callable[[Dict[str, Any]], None]] =
         # Detect installed Chrome/Chromium major version to match undetected-chromedriver
         chrome_version = None
         try:
-            for binary in ("google-chrome", "chromium", "chromium-browser"):
+            for binary in ("google-chrome-stable", "google-chrome", "chromium", "chromium-browser"):
                 try:
                     result = subprocess.run(
                         [binary, "--version"],
@@ -154,6 +159,10 @@ def _get_browser(progress_callback: Optional[Callable[[Dict[str, Any]], None]] =
         kwargs = {"options": options, "use_subprocess": True}
         if chrome_version:
             kwargs["version_main"] = chrome_version
+        
+        # Explicitly pass the detected binary path to undetected-chromedriver
+        if chrome_bin:
+            kwargs["browser_executable_path"] = chrome_bin
         
         driver = uc.Chrome(**kwargs)
         
@@ -215,12 +224,45 @@ def _close_browser():
     if _browser_instance is not None:
         try:
             _browser_instance.quit()
-            logger.info("Closed browser instance")
+            logger.info("[Session] Browser instance closed")
         except Exception as e:
-            logger.warning(f"Error closing browser: {e}")
+            logger.warning(f"[Session] Error closing browser: {e}")
         finally:
             _browser_instance = None
             _query_count = 0
+
+
+def _refresh_session(
+    reason: str = "CAPTCHA exhaustion",
+    progress_callback: Optional[Callable[[Dict[str, Any]], None]] = None,
+) -> None:
+    """Force-close the current browser and create a fresh session.
+
+    This rotates User-Agent / viewport and clears session-level cookies &
+    tracking tokens that may have been flagged by Google.
+    """
+    global _session_refresh_count
+    _session_refresh_count += 1
+    logger.info(
+        f"[Session Refresh #{_session_refresh_count}] Triggered – reason: {reason}"
+    )
+    _emit_progress(
+        progress_callback,
+        "session_refresh",
+        f"Refreshing browser session (reason: {reason}, refresh #{_session_refresh_count})",
+        level="WARNING",
+    )
+    _close_browser()
+    # Small cooldown before creating a new session
+    cooldown = random.uniform(5, 10)
+    logger.info(
+        f"[Session Refresh #{_session_refresh_count}] Cooling down for {cooldown:.1f}s before new session"
+    )
+    time.sleep(cooldown)
+    _get_browser(progress_callback=progress_callback)
+    logger.info(
+        f"[Session Refresh #{_session_refresh_count}] New browser session created successfully"
+    )
 
 
 def _check_for_captcha(driver) -> bool:
@@ -282,6 +324,7 @@ def _scrape_google_results(
     Returns:
         List of result dicts with rank, title, url
     """
+    global _captcha_hit_in_run, _consecutive_captcha_failures
     results = []
     
     try:
@@ -303,6 +346,9 @@ def _scrape_google_results(
         # Try up to 3 times with increasing backoff if CAPTCHA is hit
         page_loaded = False
         for attempt in range(3):
+            logger.info(
+                f"[Query {query_index}/{total_queries}] Loading Google results (attempt {attempt + 1}/3): {search_query[:80]}"
+            )
             _emit_progress(
                 progress_callback,
                 "attempt_start",
@@ -318,6 +364,9 @@ def _scrape_google_results(
             
             if not _check_for_captcha(driver):
                 page_loaded = True
+                logger.info(
+                    f"[Query {query_index}/{total_queries}] SERP loaded successfully on attempt {attempt + 1}"
+                )
                 _emit_progress(
                     progress_callback,
                     "serp_loaded",
@@ -328,10 +377,17 @@ def _scrape_google_results(
                     attempt=attempt + 1,
                     max_attempts=3,
                 )
+                # Reset consecutive failures on success
+                _consecutive_captcha_failures = 0
                 break
             
+            # Mark that we hit a CAPTCHA in this run (for adaptive throttling)
+            _captcha_hit_in_run = True
             backoff = [10, 30, 60][attempt]
-            logger.warning(f"CAPTCHA detected (attempt {attempt+1}/3) for query: {query}, waiting {backoff}s...")
+            logger.warning(
+                f"[Query {query_index}/{total_queries}] ⚠ CAPTCHA detected (attempt {attempt+1}/3) "
+                f"for query: {query[:60]}, backing off for {backoff}s..."
+            )
             _emit_progress(
                 progress_callback,
                 "captcha_detected",
@@ -349,17 +405,70 @@ def _scrape_google_results(
             time.sleep(backoff)
         
         if not page_loaded:
-            logger.error(f"CAPTCHA persisted after 3 retries for query: {query}")
+            _consecutive_captcha_failures += 1
+            logger.error(
+                f"[Query {query_index}/{total_queries}] ✘ CAPTCHA persisted after 3 retries for query: {query[:60]} "
+                f"(consecutive failures: {_consecutive_captcha_failures})"
+            )
             _emit_progress(
                 progress_callback,
                 "captcha_failed",
-                "CAPTCHA persisted after 3 retries; returning no results",
+                f"CAPTCHA persisted after 3 retries; attempting session refresh",
                 level="ERROR",
                 query_index=query_index,
                 total_queries=total_queries,
                 query=query,
             )
-            return []
+
+            # ── SESSION REFRESH: destroy session and retry once with a fresh browser ──
+            logger.info(
+                f"[Query {query_index}/{total_queries}] 🔄 Initiating session refresh to bypass CAPTCHA..."
+            )
+            _refresh_session(
+                reason=f"CAPTCHA exhaustion on query '{query[:40]}'",
+                progress_callback=progress_callback,
+            )
+            driver = _get_browser(progress_callback=progress_callback)
+
+            # One final attempt with the fresh session
+            post_refresh_delay = random.uniform(3, 6)
+            logger.info(
+                f"[Query {query_index}/{total_queries}] Retrying query after session refresh "
+                f"(delay {post_refresh_delay:.1f}s)..."
+            )
+            time.sleep(post_refresh_delay)
+            driver.get(url)
+            time.sleep(random.uniform(2, 4))
+
+            if not _check_for_captcha(driver):
+                page_loaded = True
+                logger.info(
+                    f"[Query {query_index}/{total_queries}] ✔ Session refresh succeeded – SERP loaded"
+                )
+                _emit_progress(
+                    progress_callback,
+                    "session_refresh_success",
+                    "Session refresh succeeded – search results loaded",
+                    query_index=query_index,
+                    total_queries=total_queries,
+                    query=query,
+                )
+                _consecutive_captcha_failures = 0
+            else:
+                logger.error(
+                    f"[Query {query_index}/{total_queries}] ✘ CAPTCHA persists even after session refresh – "
+                    f"skipping query and moving forward"
+                )
+                _emit_progress(
+                    progress_callback,
+                    "captcha_final_fail",
+                    "CAPTCHA persists after session refresh; skipping this query",
+                    level="ERROR",
+                    query_index=query_index,
+                    total_queries=total_queries,
+                    query=query,
+                )
+                return []
         
         # Human-like scroll behavior
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight / 3);")
@@ -589,16 +698,25 @@ def _scrape_google_results_sync(
     total_queries: Optional[int] = None,
 ) -> List[Dict]:
     """Synchronous wrapper for scraping (called from thread pool)"""
-    global _query_count
+    global _query_count, _captcha_hit_in_run, _consecutive_captcha_failures
     driver = _get_browser(progress_callback=progress_callback)
     
-    # First query gets a shorter delay (browser just warmed up)
-    # Subsequent queries get longer delays to avoid CAPTCHA
+    # ── Adaptive throttling ──
+    # Base delay depends on whether we've already seen CAPTCHAs in this run
     if _query_count == 0:
         delay = random.uniform(2, 3)
+    elif _captcha_hit_in_run:
+        # Increase delay after CAPTCHA encounters to reduce future triggers
+        delay = random.uniform(10, 15)
+        logger.info(
+            f"[Throttle] Using elevated delay ({delay:.1f}s) – CAPTCHA was detected earlier in this run"
+        )
     else:
         delay = random.uniform(5, 8)
 
+    logger.info(
+        f"[Throttle] Applying {delay:.1f}s anti-bot delay before query {query_index}/{total_queries}"
+    )
     _emit_progress(
         progress_callback,
         "throttle_delay",
@@ -625,7 +743,9 @@ def _scrape_google_results_sync(
         if not _is_invalid_session_error(e):
             raise
 
-        logger.warning(f"Invalid Selenium session detected; recreating driver and retrying once: {e}")
+        logger.warning(
+            f"[Session] Invalid Selenium session detected; recreating driver and retrying once: {e}"
+        )
         _emit_progress(
             progress_callback,
             "session_recovery",
@@ -654,5 +774,13 @@ def _scrape_google_results_sync(
 
 
 def cleanup_browser():
-    """Cleanup function to close browser after run completes"""
+    """Cleanup function to close browser after run completes.
+
+    Also resets the adaptive-throttling state so the next run starts fresh.
+    """
+    global _captcha_hit_in_run, _consecutive_captcha_failures, _session_refresh_count
     _close_browser()
+    _captcha_hit_in_run = False
+    _consecutive_captcha_failures = 0
+    _session_refresh_count = 0
+    logger.info("[Cleanup] Browser closed and throttling state reset for next run")

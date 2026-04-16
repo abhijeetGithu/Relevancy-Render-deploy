@@ -40,7 +40,7 @@ echo ""
 echo "✅ Setup complete!"
 echo ""
 echo "🌐 Starting the server..."
-echo "   Frontend will be available at: http://localhost:5050"
+echo "   Frontend will be available at: http://localhost:5051"
 echo "   Press Ctrl+C to stop the server"
 echo ""
 

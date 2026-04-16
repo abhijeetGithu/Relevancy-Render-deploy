@@ -1,130 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Search Relevancy Suite</title>
-    <link rel="stylesheet" href="/static/styles.css" />
-  </head>
-  <body>
-    <nav class="top-nav">
-      <div class="nav-brand">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        Search Relevancy Suite
-      </div>
-      <div class="nav-status" id="global-status">
-        <span class="status-dot" id="global-dot"></span>
-        <span id="global-text">Checking services...</span>
-      </div>
-    </nav>
 
-    <main class="container">
-      <header class="hero">
-        <div class="hero-badge">Search Relevancy Suite</div>
-        <h1>Unified Search Testing Portal</h1>
-        <p class="hero-sub">
-          Choose a tool to begin your search relevancy analysis. After evaluation completes, you'll have the option to continue with LLM-based comparison.
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Relevancy Suite</title>
+  <link rel="stylesheet" href="static/styles.css" />
+</head>
+
+<body>
+  <nav class="top-nav">
+    <div class="nav-brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+      Search Relevancy Suite
+    </div>
+    <div class="nav-status" id="global-status">
+      <span class="status-dot" id="global-dot"></span>
+      <span id="global-text">Checking services...</span>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="hero">
+      <div class="hero-badge">Search Relevancy Suite</div>
+      <h1>Unified Search Testing Portal</h1>
+      <p class="hero-sub">
+        Choose a tool to begin your search relevancy analysis. After evaluation completes, you'll have the option to
+        continue with LLM-based comparison.
+      </p>
+    </header>
+
+    <section class="cards-grid one-tool">
+
+      <!-- DataQuery_Engine -->
+      <a href="dataquery/" class="app-card" id="card-dqe" data-url="dataquery/">
+        <div class="card-status">
+          <span class="status-dot" id="dot-dqe"></span>
+          <span class="status-label" id="label-dqe">Checking...</span>
+        </div>
+        <div class="card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 7V4h16v3" />
+            <path d="M9 20h6" />
+            <path d="M12 4v16" />
+            <rect x="2" y="7" width="20" height="5" rx="1" />
+            <rect x="2" y="14" width="20" height="5" rx="1" />
+            <circle cx="6" cy="9.5" r="1" fill="currentColor" />
+            <circle cx="6" cy="16.5" r="1" fill="currentColor" />
+          </svg>
+        </div>
+        <h2 class="card-title">Data Query Engine</h2>
+        <p class="card-desc">
+          Generate document data, evaluate search APIs, and create queries via LLM agents. After evaluation, optionally
+          continue to LLM Comparator for deeper analysis.
         </p>
-      </header>
+        <div class="card-tags">
+          <span class="tag">Flask</span>
+          <span class="tag">LLM Agents</span>
+          <span class="tag">CSV/Excel</span>
+        </div>
+        <div class="card-flow">
+          <span class="flow-step">Search Evaluation</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+          <span class="flow-step optional">LLM Comparison</span>
+        </div>
+        <div class="card-footer">
+          <span class="port-label">Port 5051</span>
+          <span class="launch-btn">Open App &rarr;</span>
+        </div>
+      </a>
 
-      <section class="cards-grid one-tool">
+    </section>
 
-        <!-- DataQuery_Engine -->
-        <a href="http://localhost:5050" class="app-card" id="card-dqe" data-url="http://localhost:5050">
-          <div class="card-status">
-            <span class="status-dot" id="dot-dqe"></span>
-            <span class="status-label" id="label-dqe">Checking...</span>
-          </div>
-          <div class="card-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M4 7V4h16v3"/>
-              <path d="M9 20h6"/>
-              <path d="M12 4v16"/>
-              <rect x="2" y="7" width="20" height="5" rx="1"/>
-              <rect x="2" y="14" width="20" height="5" rx="1"/>
-              <circle cx="6" cy="9.5" r="1" fill="currentColor"/>
-              <circle cx="6" cy="16.5" r="1" fill="currentColor"/>
-            </svg>
-          </div>
-          <h2 class="card-title">Data Query Engine</h2>
-          <p class="card-desc">
-            Generate document data, evaluate search APIs, and create queries via LLM agents. After evaluation, optionally continue to LLM Comparator for deeper analysis.
-          </p>
-          <div class="card-tags">
-            <span class="tag">Flask</span>
-            <span class="tag">LLM Agents</span>
-            <span class="tag">CSV/Excel</span>
-          </div>
-          <div class="card-flow">
-            <span class="flow-step">Search Evaluation</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-            <span class="flow-step optional">LLM Comparison</span>
-          </div>
-          <div class="card-footer">
-            <span class="port-label">Port 5050</span>
-            <span class="launch-btn">Open App &rarr;</span>
-          </div>
-        </a>
+    <footer class="footer">
+      <p>All services are launched via <code>launch.py</code> &mdash; Portal on /relevancy-framework/ &middot; DataQuery
+        on /relevancy-framework/dataquery/
+        &middot; LLM Comparator on /relevancy-framework/llm/</p>
+    </footer>
+  </main>
 
-      </section>
+  <script>
+    const services = [
+      { id: "dqe", url: "dataquery/", name: "Data Query Engine" },
+    ];
 
-      <footer class="footer">
-        <p>All services are launched via <code>launch.py</code> &mdash; Portal on :8000 &middot; DataQuery on :5050 &middot; LLM Comparator on :8001</p>
-      </footer>
-    </main>
-
-    <script>
-      const services = [
-        { id: "dqe", url: "http://localhost:5050", name: "Data Query Engine" },
-      ];
-
-      async function checkService(svc) {
-        const dot = document.getElementById("dot-" + svc.id);
-        const label = document.getElementById("label-" + svc.id);
-        const card = document.getElementById("card-" + svc.id);
-        try {
-          const ctrl = new AbortController();
-          const timer = setTimeout(() => ctrl.abort(), 3000);
-          await fetch(svc.url, { mode: "no-cors", signal: ctrl.signal });
-          clearTimeout(timer);
-          dot.classList.add("online");
-          dot.classList.remove("offline");
-          label.textContent = "Online";
-          card.classList.remove("unavailable");
-        } catch {
-          dot.classList.add("offline");
-          dot.classList.remove("online");
-          label.textContent = "Offline";
-          card.classList.add("unavailable");
-        }
+    async function checkService(svc) {
+      const dot = document.getElementById("dot-" + svc.id);
+      const label = document.getElementById("label-" + svc.id);
+      const card = document.getElementById("card-" + svc.id);
+      try {
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 3000);
+        await fetch(svc.url, { mode: "no-cors", signal: ctrl.signal });
+        clearTimeout(timer);
+        dot.classList.add("online");
+        dot.classList.remove("offline");
+        label.textContent = "Online";
+        card.classList.remove("unavailable");
+      } catch {
+        dot.classList.add("offline");
+        dot.classList.remove("online");
+        label.textContent = "Offline";
+        card.classList.add("unavailable");
       }
+    }
 
-      async function checkAll() {
-        await Promise.all(services.map(checkService));
-        const allOnline = services.every(s =>
+    async function checkAll() {
+      await Promise.all(services.map(checkService));
+      const allOnline = services.every(s =>
+        document.getElementById("dot-" + s.id).classList.contains("online")
+      );
+      const globalDot = document.getElementById("global-dot");
+      const globalText = document.getElementById("global-text");
+      if (allOnline) {
+        globalDot.classList.add("online");
+        globalDot.classList.remove("offline");
+        globalText.textContent = "All services running";
+      } else {
+        globalDot.classList.add("offline");
+        globalDot.classList.remove("online");
+        const count = services.filter(s =>
           document.getElementById("dot-" + s.id).classList.contains("online")
-        );
-        const globalDot = document.getElementById("global-dot");
-        const globalText = document.getElementById("global-text");
-        if (allOnline) {
-          globalDot.classList.add("online");
-          globalDot.classList.remove("offline");
-          globalText.textContent = "All services running";
-        } else {
-          globalDot.classList.add("offline");
-          globalDot.classList.remove("online");
-          const count = services.filter(s =>
-            document.getElementById("dot-" + s.id).classList.contains("online")
-          ).length;
-          globalText.textContent = count + " of " + services.length + " services running";
-        }
+        ).length;
+        globalText.textContent = count + " of " + services.length + " services running";
       }
+    }
 
-      checkAll();
-      setInterval(checkAll, 5000);
-    </script>
-  </body>
+    checkAll();
+    setInterval(checkAll, 5000);
+  </script>
+</body>
+
 </html>

@@ -36,6 +36,9 @@ build/
 # query_outputs/
 # LLM_Comparator/LLM_Comparator/usage_data.json
 
+# Playwright MCP screenshots
+.playwright-mcp/
+
 # OS
 .DS_Store
 Thumbs.db

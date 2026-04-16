@@ -10,95 +10,103 @@
 # Run from pre-pulled images (no rebuild):
 #   docker compose pull && docker compose up -d --no-build
 #
-# Ports: Portal 8000, DataQuery 5050, LLM Comparator 8001, relevancy-script 8002
+# Ports: Portal 8004, DataQuery 5051, LLM Comparator 8005, relevancy-script 8006
 #
 # DataQuery Engine calls LLM Comparator over the Docker network (LLM_COMPARATOR_URL).
 #
 # Image names use SUITE_REGISTRY (e.g. your Docker Hub user). Default "local" tags locally only.
+
+version: '3.3'
 
 services:
   llm-comparator:
     build:
       context: ./LLM_Comparator/LLM_Comparator
       dockerfile: Dockerfile
-    image: ${SUITE_REGISTRY:-local}/relevancy-suite-llm-comparator:${SUITE_TAG:-latest}
+    image: ${SUITE_REGISTRY}/relevancy-suite-llm-comparator:${SUITE_TAG}
     container_name: suite-llm-comparator
     # Selenium/Chrome uses /dev/shm; default 64MB often causes crashes in headless Chrome
     shm_size: "1gb"
     ports:
-      - "${LLM_COMPARATOR_HOST_PORT:-8001}:8001"
+      - "${LLM_COMPARATOR_HOST_PORT}:8005"
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
-      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
-      - CHROME_BIN=/usr/bin/chromium
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL}
+      - CHROME_BIN=/usr/bin/google-chrome-stable
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/api/health', timeout=5)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8005/api/health', timeout=5)"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          memory: 4096M
+        reservations:
+          memory: 1024M
 
   dataquery-engine:
     build:
       context: ./DataQuery_Engine
       dockerfile: Dockerfile
-    image: ${SUITE_REGISTRY:-local}/relevancy-suite-dataquery-engine:${SUITE_TAG:-latest}
+    image: ${SUITE_REGISTRY}/relevancy-suite-dataquery-engine:${SUITE_TAG}
     container_name: suite-dataquery-engine
     ports:
-      - "${DATAQUERY_HOST_PORT:-5050}:5050"
+      - "${DATAQUERY_HOST_PORT}:5051"
     environment:
-      - PORT=5050
-      - LLM_COMPARATOR_URL=http://llm-comparator:8001
-      - GUNICORN_WORKERS=${GUNICORN_WORKERS:-2}
-      - GUNICORN_TIMEOUT=${GUNICORN_TIMEOUT:-1200}
+      - PORT=5051
+      - LLM_COMPARATOR_URL=http://llm-comparator:8005
+      - GUNICORN_WORKERS=${GUNICORN_WORKERS}
+      - GUNICORN_TIMEOUT=${GUNICORN_TIMEOUT}
       - DATAQUERY_NO_RELOADER=1
-    depends_on:
-      llm-comparator:
-        condition: service_healthy
+    depends_on: [llm-comparator]
     volumes:
       - dqe_query_outputs:/app/query_outputs
       - dqe_temp_downloads:/app/.temp_downloads
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:5050/"]
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:5051/"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
+        reservations:
+          memory: 512M
 
   relevancy-script:
     build:
       context: ./relevancy-script
       dockerfile: Dockerfile
-    image: ${SUITE_REGISTRY:-local}/relevancy-suite-relevancy-script:${SUITE_TAG:-latest}
+    image: ${SUITE_REGISTRY}/relevancy-suite-relevancy-script:${SUITE_TAG}
     container_name: suite-relevancy-script
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8002"]
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8006"]
     ports:
-      - "${RELEVANCY_HOST_PORT:-8002}:8002"
+      - "${RELEVANCY_HOST_PORT}:8006"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8002/health', timeout=5)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8006/health', timeout=5)"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 15s
 
   portal:
     build:
       context: .
       dockerfile: Dockerfile.portal
-    image: ${SUITE_REGISTRY:-local}/relevancy-suite-portal:${SUITE_TAG:-latest}
+    image: ${SUITE_REGISTRY}/relevancy-suite-portal:${SUITE_TAG}
     container_name: suite-portal
     ports:
-      - "${PORTAL_HOST_PORT:-8000}:8000"
+      - "${PORTAL_HOST_PORT}:8004"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8004/health', timeout=5)"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 10s
 
 volumes:
   dqe_query_outputs:

@@ -67,7 +67,7 @@ All components of the rate limiting system have been successfully implemented an
 
 ```bash
 # Usage status endpoint working
-$ curl http://localhost:8000/api/usage-status
+$ curl http://localhost:8004/api/usage-status
 {
   "rate_limiting_enabled": true,
   "daily": {"used": 50, "limit": 500, "resets_at": "2026-03-03T00:00:00"},

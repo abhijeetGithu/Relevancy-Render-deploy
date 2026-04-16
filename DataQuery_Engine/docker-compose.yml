@@ -12,7 +12,7 @@ services:
         limits:
           memory: ${MEMORY:-2G}
     ports:
-      - "${EXPOSED_PORT:-5050}:5050"
+      - "${EXPOSED_PORT:-5051}:5051"
     restart: always
     env_file:
       - .env
@@ -20,14 +20,14 @@ services:
       - GUNICORN_WORKERS=${GUNICORN_WORKERS:-2}
       - GUNICORN_TIMEOUT=${GUNICORN_TIMEOUT:-1200}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5050/"]
+      test: ["CMD", "curl", "-f", "http://localhost:5051/"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
     command: >
       gunicorn 
-      --bind 0.0.0.0:5050 
+      --bind 0.0.0.0:5051 
       --workers=${GUNICORN_WORKERS:-2} 
       --timeout=${GUNICORN_TIMEOUT:-1200}
       --access-logfile -

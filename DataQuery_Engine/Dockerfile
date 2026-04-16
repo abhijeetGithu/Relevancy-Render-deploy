@@ -17,7 +17,7 @@ FROM python:3.11-bookworm
 ENV PIP_NO_CACHE_DIR=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PORT=5050
+    PORT=5051
 
 WORKDIR /app
 
@@ -41,8 +41,8 @@ RUN useradd -m appuser && chown -R appuser:appuser /app
 USER appuser
 
 # Expose port
-EXPOSE 5050
+EXPOSE 5051
 
 # Default command uses gunicorn for production
-# Adjust workers based on CPU cores; fallback to 2
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-5050} --workers=${GUNICORN_WORKERS:-2} --timeout=${GUNICORN_TIMEOUT:-120} --access-logfile - --error-logfile - server:app"]
+# Adjust workers based on CPU cores; fallback to 4. Use gevent for non-blocking streaming.
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-5051} --workers=${GUNICORN_WORKERS:-4} --worker-class=gevent --timeout=${GUNICORN_TIMEOUT:-1200} --access-logfile - --error-logfile - server:app"]

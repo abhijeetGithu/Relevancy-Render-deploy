@@ -4,10 +4,10 @@ This repo runs **four services**, same as local development:
 
 | Service | Port | Role |
 |--------|------|------|
-| **Portal** | 8000 | Landing page / links into apps |
-| **DataQuery_Engine** | 5050 | Main Flask UI + APIs (`server.py`) |
-| **LLM_Comparator** | 8001 | Google search helpers, LLM judge (used by DataQuery server + browser for “Open LLM Comparator”) |
-| **relevancy-script** | 8002 | Additional FastAPI app |
+| **Portal** | 8004 | Landing page / links into apps |
+| **DataQuery_Engine** | 5051 | Main Flask UI + APIs (`server.py`) |
+| **LLM_Comparator** | 8005 | Google search helpers, LLM judge (used by DataQuery server + browser for “Open LLM Comparator”) |
+| **relevancy-script** | 8006 | Additional FastAPI app |
 
 Local dev: `python3 launch.py` starts all four (see `launch.py`).
 
@@ -15,7 +15,7 @@ Local dev: `python3 launch.py` starts all four (see `launch.py`).
 
 ## Option A — Docker Compose (recommended for production)
 
-Root [`docker-compose.yml`](docker-compose.yml) mirrors `launch.py`: builds four images, wires **DataQuery → LLM Comparator** on the internal network (`LLM_COMPARATOR_URL=http://llm-comparator:8001`).
+Root [`docker-compose.yml`](docker-compose.yml) mirrors `launch.py`: builds four images, wires **DataQuery → LLM Comparator** on the internal network (`LLM_COMPARATOR_URL=http://llm-comparator:8005`).
 
 ### 1. Configure environment (optional)
 
@@ -75,10 +75,10 @@ Open the same URLs as below. Use `--no-build` so Compose uses pulled images inst
 
 ### 3. Open the apps
 
-- Portal: `http://<host>:8000` (or `PORTAL_HOST_PORT` from `.env`)
-- Data Query Engine: `http://<host>:5050`
-- LLM Comparator (direct): `http://<host>:8001`
-- Relevancy script: `http://<host>:8002`
+- Portal: `http://<host>:8004` (or `PORTAL_HOST_PORT` from `.env`)
+- Data Query Engine: `http://<host>:5051`
+- LLM Comparator (direct): `http://<host>:8005`
+- Relevancy script: `http://<host>:8006`
 
 **Important:** Use the **root** `docker-compose.yml` in the repository root — not `DataQuery_Engine/docker-compose.yml` or `relevancy-script/docker-compose.yml` unless you intentionally run a subset.
 
@@ -122,7 +122,7 @@ Set **`DATAQUERY_NO_RELOADER=1`** for DataQuery when not using `launch.py` (alre
 
 | Variable | Where | Purpose |
 |----------|--------|---------|
-| `LLM_COMPARATOR_URL` | DataQuery_Engine | Base URL for server-side calls to LLM Comparator. In Docker Compose defaults to `http://llm-comparator:8001`. On bare metal: `http://127.0.0.1:8001`. |
+| `LLM_COMPARATOR_URL` | DataQuery_Engine | Base URL for server-side calls to LLM Comparator. In Docker Compose defaults to `http://llm-comparator:8005`. On bare metal: `http://127.0.0.1:8005`. |
 | `GUNICORN_WORKERS`, `GUNICORN_TIMEOUT` | DataQuery Docker | Production WSGI (`server:app`). |
 | `OPENAI_API_KEY`, `OPENAI_MODEL` | LLM Comparator Docker | Features that call OpenAI from that app. |
 | `PORTAL_HOST_PORT`, `DATAQUERY_HOST_PORT`, etc. | Root `.env` | Publish different host ports. |
@@ -134,8 +134,8 @@ DataQuery also reads project-specific settings; see `DataQuery_Engine/.env.examp
 ## Reverse proxy / HTTPS
 
 - Terminate TLS at nginx, Caddy, or your cloud load balancer.
-- Proxy **each** port (8000, 5050, 8001, 8002) or map paths to services; if you use path-based routing, the DataQuery `frontend.html` **API base** logic may need the app served from a path (see comments around `API_BASE` in `DataQuery_Engine/frontend.html`).
-- The UI uses **`http://localhost:8001`** for “Open LLM Comparator” and some flows; for users **not** on the same machine as the browser, replace with your public LLM Comparator URL (or add a small env-injected script in your proxy build). Server-side Google/LLM calls use `LLM_COMPARATOR_URL` and work inside Docker without that.
+- Proxy **each** port (8004, 5051, 8005, 8006) or map paths to services; if you use path-based routing, the DataQuery `frontend.html` **API base** logic may need the app served from a path (see comments around `API_BASE` in `DataQuery_Engine/frontend.html`).
+- The UI uses **`http://localhost:8005`** for “Open LLM Comparator” and some flows; for users **not** on the same machine as the browser, replace with your public LLM Comparator URL (or add a small env-injected script in your proxy build). Server-side Google/LLM calls use `LLM_COMPARATOR_URL` and work inside Docker without that.
 
 ---
 
@@ -143,7 +143,7 @@ DataQuery also reads project-specific settings; see `DataQuery_Engine/.env.examp
 
 The **LLM Comparator** image is built with **Chromium** and libraries needed for **headless** `undetected-chromedriver` (same code path as local `python3 launch.py`).
 
-- **`CHROME_BIN=/usr/bin/chromium`** is set in the image and in Compose so Selenium uses the packaged browser.
+- **`CHROME_BIN=/usr/bin/google-chrome-stable`** is set in the image and in Compose so Selenium uses the packaged browser.
 - **`shm_size: 1gb`** on the `llm-comparator` service avoids Chrome crashes from the default small `/dev/shm` in Docker.
 
 If the scraper still misbehaves:
@@ -160,8 +160,8 @@ If the scraper still misbehaves:
 |------|---------|
 | [`Dockerfile.portal`](Dockerfile.portal) | Portal |
 | [`DataQuery_Engine/Dockerfile`](DataQuery_Engine/Dockerfile) | Gunicorn + Flask `server:app` |
-| [`LLM_Comparator/LLM_Comparator/Dockerfile`](LLM_Comparator/LLM_Comparator/Dockerfile) | Uvicorn on **8001** |
-| [`relevancy-script/Dockerfile`](relevancy-script/Dockerfile) | Uvicorn (Compose overrides port to **8002**) |
+| [`LLM_Comparator/LLM_Comparator/Dockerfile`](LLM_Comparator/LLM_Comparator/Dockerfile) | Uvicorn on **8005** |
+| [`relevancy-script/Dockerfile`](relevancy-script/Dockerfile) | Uvicorn (Compose overrides port to **8006**) |
 
 ---
 

@@ -55,7 +55,7 @@ def start_server():
     """Start the Flask server"""
     print("\n🚀 Starting Document Data Generation Frontend...")
     print("=" * 50)
-    print("🌐 Frontend URL: http://localhost:5050")
+    print("🌐 Frontend URL: http://localhost:5051")
     print("📁 Working directory:", os.path.dirname(os.path.abspath(__file__)))
     print("💡 Press Ctrl+C to stop the server")
     print("=" * 50)
@@ -63,7 +63,7 @@ def start_server():
     try:
         # Import and run the server
         from server import app
-        app.run(debug=True, host='0.0.0.0', port=5050)
+        app.run(debug=True, host='0.0.0.0', port=5051)
     except ImportError:
         print("❌ Error: server.py not found or has import errors")
         sys.exit(1)
