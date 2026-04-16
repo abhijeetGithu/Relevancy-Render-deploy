@@ -2004,9 +2004,12 @@ def temp_file_columns():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
-# Base URL for LLM Comparator (for Google-only and LLM comparison redirect)
+# Browser-facing URL for LLM Comparator (used in /api/config for frontend nav)
 LLM_COMPARATOR_URL = os.environ.get('LLM_COMPARATOR_URL', 'http://localhost:8005')
 PORTAL_URL = os.environ.get('PORTAL_URL', '/')
+# Internal HTTP URL for server-to-server calls (urllib). Falls back to
+# LLM_COMPARATOR_URL when not set (standalone mode).
+_LLM_COMPARATOR_INTERNAL_URL = os.environ.get('LLM_COMPARATOR_INTERNAL_URL', LLM_COMPARATOR_URL)
 
 
 def _llm_comparator_404_message(http_error, base_url):
@@ -2051,7 +2054,7 @@ def run_google_search():
             status = 404 if 'expired' in err else 400
             return jsonify({'success': False, 'error': err}), status
         logger.info("[Google Search Result] Starting: queries_count=%s", len(queries))
-        url = '{}/api/google-only'.format(LLM_COMPARATOR_URL.rstrip('/'))
+        url = '{}/api/google-only'.format(_LLM_COMPARATOR_INTERNAL_URL.rstrip('/'))
         payload = json.dumps({'queries': queries, 'max_results': 10}).encode('utf-8')
         req_obj = UrlRequest(url, data=payload, method='POST', headers={'Content-Type': 'application/json'})
         resp = urlopen(req_obj, timeout=600)
@@ -2101,7 +2104,7 @@ def run_google_search_api():
             logger.warning("[Google Search Result] extract_queries failed: %s", err)
             return jsonify({'success': False, 'error': err}), status
         logger.info("[Google Search Result] Starting (API): queries_count=%s", len(queries))
-        url = '{}/api/google-only-api'.format(LLM_COMPARATOR_URL.rstrip('/'))
+        url = '{}/api/google-only-api'.format(_LLM_COMPARATOR_INTERNAL_URL.rstrip('/'))
         payload = json.dumps({'queries': queries, 'max_results': 10, 'api_key': api_key, 'cse_id': cse_id}).encode('utf-8')
         req_obj = UrlRequest(url, data=payload, method='POST', headers={'Content-Type': 'application/json'})
         resp = urlopen(req_obj, timeout=300)
@@ -2153,7 +2156,7 @@ def stream_run_google_search():
         if site:
             payload_dict['site'] = site
         payload = json.dumps(payload_dict).encode('utf-8')
-        url = '{}/api/google-only-stream'.format(LLM_COMPARATOR_URL.rstrip('/'))
+        url = '{}/api/google-only-stream'.format(_LLM_COMPARATOR_INTERNAL_URL.rstrip('/'))
         req_obj = UrlRequest(url, data=payload, method='POST', headers={'Content-Type': 'application/json'})
         bufsize = 8192
 
@@ -2171,7 +2174,7 @@ def stream_run_google_search():
                 try:
                     resp = urlopen(req_obj, timeout=600)
                 except HTTPError as e:
-                    err_msg = _llm_comparator_404_message(e, LLM_COMPARATOR_URL)
+                    err_msg = _llm_comparator_404_message(e, _LLM_COMPARATOR_INTERNAL_URL)
                     logger.error("[Google Search Result] Stream HTTP error: %s", err_msg)
                     yield json.dumps({'type': 'log', 'message': err_msg}) + '\n'
                     yield json.dumps({'type': 'error', 'message': err_msg}) + '\n'

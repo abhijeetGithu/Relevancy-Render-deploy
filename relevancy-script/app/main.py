@@ -20,12 +20,14 @@ from app.match_mode import MatchMode
 
 app = FastAPI(title="Relevancy System")
 
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+_RS_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-templates = Jinja2Templates(directory="app/templates")
+app.mount("/static", StaticFiles(directory=os.path.join(_RS_BASE_DIR, "app", "static")), name="static")
+
+templates = Jinja2Templates(directory=os.path.join(_RS_BASE_DIR, "app", "templates"))
 
 PORTAL_URL = os.environ.get("PORTAL_URL", "/")
-LLM_COMPARATOR_URL = os.environ.get("LLM_COMPARATOR_URL", "/")
+LLM_COMPARATOR_URL = os.environ.get("LLM_COMPARATOR_URL", "/llm/")
 
 
 class _RunState:

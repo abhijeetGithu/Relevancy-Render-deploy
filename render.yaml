@@ -1,100 +1,31 @@
-# Search Relevancy Suite - Render Blueprint
-# Deploys: Portal, DataQuery Engine, LLM Comparator, Relevancy Script
-# Services discover each other via RENDER_EXTERNAL_URL references.
+# Search Relevancy Suite - Unified Render Blueprint
+# Single application serving all tools under one domain:
+#   /           -> Portal
+#   /dataquery  -> DataQuery Engine
+#   /llm        -> LLM Comparator
+#   /relevancy  -> Relevancy Script
 
 services:
   - type: web
-    name: relevancy-portal
-    runtime: python
-    plan: free
-    rootDir: .
-    buildCommand: pip install -r requirements-portal.txt
-    startCommand: uvicorn portal.app:app --host 0.0.0.0 --port $PORT
-    healthCheckPath: /health
-    envVars:
-      - key: PYTHON_VERSION
-        value: "3.11.0"
-      - key: DATAQUERY_URL
-        fromService:
-          name: dataquery-engine
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL
-      - key: LLM_COMPARATOR_URL
-        fromService:
-          name: llm-comparator
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL
-      - key: RELEVANCY_SCRIPT_URL
-        fromService:
-          name: relevancy-script
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL
-
-  - type: web
-    name: dataquery-engine
+    name: relevancy-suite
     runtime: docker
     plan: free
-    rootDir: DataQuery_Engine
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./Dockerfile.unified
     healthCheckPath: /health
     envVars:
+      - key: DATAQUERY_URL
+        value: "/dataquery/"
+      - key: LLM_COMPARATOR_URL
+        value: "/llm/"
+      - key: RELEVANCY_SCRIPT_URL
+        value: "/relevancy/"
+      - key: PORTAL_URL
+        value: "/"
       - key: GUNICORN_WORKERS
         value: 1
       - key: GUNICORN_TIMEOUT
         value: 1200
       - key: FLASK_DEBUG
         value: "false"
-      - key: LLM_COMPARATOR_URL
-        fromService:
-          name: llm-comparator
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL
-      - key: PORTAL_URL
-        fromService:
-          name: relevancy-portal
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL
-
-  - type: web
-    name: llm-comparator
-    runtime: docker
-    plan: free
-    rootDir: LLM_Comparator/LLM_Comparator
-    dockerfilePath: ./Dockerfile
-    envVars:
-      - key: PORTAL_URL
-        fromService:
-          name: relevancy-portal
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL
-      - key: DATAQUERY_URL
-        fromService:
-          name: dataquery-engine
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL
       # - key: OPENAI_API_KEY
       #   sync: false
-
-  - type: web
-    name: relevancy-script
-    runtime: python
-    plan: free
-    rootDir: relevancy-script
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
-    healthCheckPath: /health
-    envVars:
-      - key: PYTHON_VERSION
-        value: "3.11.0"
-      - key: APP_ENV
-        value: production
-      - key: PORTAL_URL
-        fromService:
-          name: relevancy-portal
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL
-      - key: LLM_COMPARATOR_URL
-        fromService:
-          name: llm-comparator
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL

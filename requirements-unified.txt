@@ -1,0 +1,50 @@
+# Unified requirements for all 4 services in a single application
+# Portal + DataQuery Engine + LLM Comparator + Relevancy Script
+
+# Web frameworks
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+flask>=2.3.0
+flask-cors>=4.0.0
+
+# ASGI/WSGI bridge
+asgiref>=3.7.0
+
+# HTTP clients
+httpx>=0.27.0
+requests>=2.31.0
+
+# Template engine (relevancy-script)
+jinja2>=3.1.0
+
+# Data handling
+pandas>=2.2.2
+openpyxl>=3.1.2
+
+# AI / LLM
+openai>=1.30.0
+google-genai>=0.3.0
+crewai>=0.28.8
+
+# Validation & typing
+pydantic>=2.7.0
+
+# Form parsing (LLM Comparator)
+python-multipart
+
+# JSON path (LLM Comparator)
+jsonpath-ng
+
+# Browser automation (LLM Comparator)
+selenium
+undetected-chromedriver
+
+# Environment
+python-dotenv>=1.0.1
+
+# Logging
+loguru>=0.7.2
+
+# Production server (DataQuery Engine subprocess)
+gunicorn>=21.2.0
+gevent>=24.2.1

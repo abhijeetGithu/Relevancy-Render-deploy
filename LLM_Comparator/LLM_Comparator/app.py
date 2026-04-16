@@ -86,19 +86,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+_LLM_APP_DIR = os.path.dirname(os.path.abspath(__file__))
+
+app.mount("/static", StaticFiles(directory=os.path.join(_LLM_APP_DIR, "static")), name="static")
 
 DEFAULT_OPENAI_MODEL = os.getenv("OPENAI_MODEL", DEFAULT_OPENAI_MODEL)
 
 PORTAL_URL = os.getenv("PORTAL_URL", "/")
-DATAQUERY_URL = os.getenv("DATAQUERY_URL", "/")
+DATAQUERY_URL = os.getenv("DATAQUERY_URL", "/dataquery/")
 
 progress_state = {"current": 0, "total": 0, "status": "idle", "stage": ""}
 
 
 @app.get("/")
 async def root():
-    return FileResponse("static/index.html")
+    return FileResponse(os.path.join(_LLM_APP_DIR, "static", "index.html"))
 
 
 @app.get("/api/config")

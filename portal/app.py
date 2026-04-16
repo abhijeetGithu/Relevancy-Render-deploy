@@ -8,9 +8,9 @@ app = FastAPI(title="Search Relevancy Suite")
 
 app.mount("/static", StaticFiles(directory="portal/static"), name="static")
 
-DATAQUERY_URL = os.environ.get("DATAQUERY_URL", "dataquery/")
-LLM_COMPARATOR_URL = os.environ.get("LLM_COMPARATOR_URL", "llm/")
-RELEVANCY_SCRIPT_URL = os.environ.get("RELEVANCY_SCRIPT_URL", "relevancy/")
+DATAQUERY_URL = os.environ.get("DATAQUERY_URL", "/dataquery/")
+LLM_COMPARATOR_URL = os.environ.get("LLM_COMPARATOR_URL", "/llm/")
+RELEVANCY_SCRIPT_URL = os.environ.get("RELEVANCY_SCRIPT_URL", "/relevancy/")
 
 
 @app.get("/")

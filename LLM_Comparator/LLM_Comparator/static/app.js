@@ -13,7 +13,7 @@ const isRsMode = _fromParam === "rs";
   let portalUrl = "/";
   let dataqueryUrl = "/";
   try {
-    const r = await fetch("/api/config");
+    const r = await fetch("api/config");
     const cfg = await r.json();
     if (cfg.portal_url) portalUrl = cfg.portal_url.replace(/\/$/, "") + "/";
     if (cfg.dataquery_url) dataqueryUrl = cfg.dataquery_url.replace(/\/$/, "") + "/";
