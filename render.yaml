@@ -56,15 +56,11 @@ services:
 
   - type: web
     name: llm-comparator
-    runtime: python
+    runtime: docker
     plan: free
     rootDir: LLM_Comparator/LLM_Comparator
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
-    healthCheckPath: /api/health
+    dockerfilePath: ./Dockerfile
     envVars:
-      - key: PYTHON_VERSION
-        value: "3.11.0"
       - key: PORTAL_URL
         fromService:
           name: relevancy-portal
