@@ -22,14 +22,10 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 _PORT = os.environ.get("PORT", "8000")
 
 # Set cross-service env vars before importing sub-apps.
-# Browser-facing URLs use relative paths (sub-path routing).
 os.environ.setdefault("DATAQUERY_URL", "/dataquery/")
 os.environ.setdefault("LLM_COMPARATOR_URL", "/llm/")
 os.environ.setdefault("RELEVANCY_SCRIPT_URL", "/relevancy/")
 os.environ.setdefault("PORTAL_URL", "/")
-
-# DQE calls LLM Comparator via urllib (needs a full HTTP URL), so we point it
-# at the loopback address of this same unified server.
 os.environ.setdefault("LLM_COMPARATOR_INTERNAL_URL", f"http://127.0.0.1:{_PORT}/llm")
 
 from fastapi import FastAPI
@@ -86,29 +82,31 @@ dqe_flask_app = _dqe_server.app
 
 app.mount("/dataquery", WSGIMiddleware(dqe_flask_app))
 
+# ── Relevancy Script (FastAPI sub-app) ────────────────────────────────────────
+# MUST be imported BEFORE LLM Comparator because both have modules that could
+# conflict. The relevancy-script uses `from app.analysis import ...` which needs
+# its `app/` package on sys.path. We import it first so `app` is registered as
+# the relevancy-script's package in sys.modules.
+_rs_dir = os.path.join(BASE_DIR, "relevancy-script")
+if _rs_dir not in sys.path:
+    sys.path.insert(0, _rs_dir)
+
+# Standard import: `app.main` resolves via _rs_dir on sys.path.
+# The `app/` directory is a namespace package (no __init__.py needed on 3.11+).
+import app.main as _rs_main_module  # noqa: E402
+
+rs_fastapi_app = _rs_main_module.app
+
+app.mount("/relevancy", rs_fastapi_app)
+
 # ── LLM Comparator (FastAPI sub-app) ─────────────────────────────────────────
 _llm_dir = os.path.join(BASE_DIR, "LLM_Comparator", "LLM_Comparator")
 if _llm_dir not in sys.path:
     sys.path.insert(0, _llm_dir)
 
-# LLM Comparator's app.py imports from services/* and utils/* which are
-# inside _llm_dir (now on sys.path for those sub-imports to resolve).
+# Use _import_from_path to avoid collision with the `app` package already
+# registered by the relevancy-script above.
 _llm_module = _import_from_path("llm_app", os.path.join(_llm_dir, "app.py"))
 llm_fastapi_app = _llm_module.app
 
 app.mount("/llm", llm_fastapi_app)
-
-# ── Relevancy Script (FastAPI sub-app) ────────────────────────────────────────
-_rs_dir = os.path.join(BASE_DIR, "relevancy-script")
-if _rs_dir not in sys.path:
-    sys.path.insert(0, _rs_dir)
-
-# The relevancy-script's app package imports from app.analysis, app.models, etc.
-# These resolve via _rs_dir on sys.path.
-_rs_module = _import_from_path(
-    "rs_app_main",
-    os.path.join(_rs_dir, "app", "main.py"),
-)
-rs_fastapi_app = _rs_module.app
-
-app.mount("/relevancy", rs_fastapi_app)
