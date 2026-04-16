@@ -36,6 +36,7 @@ services:
     plan: free
     rootDir: DataQuery_Engine
     dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
     envVars:
       - key: GUNICORN_WORKERS
         value: 1

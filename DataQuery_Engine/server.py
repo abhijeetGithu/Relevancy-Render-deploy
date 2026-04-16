@@ -277,6 +277,11 @@ def extract_queries_from_token(token: str, preferred_query_column: str = None):
         return None, query_column, 'No queries found (column: {})'.format(query_column)
 
     return queries, query_column, None
+@app.route('/health')
+def health():
+    return jsonify({'status': 'ok'})
+
+
 @app.route('/')
 def index():
     """Serve the frontend HTML file"""

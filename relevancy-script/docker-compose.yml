@@ -5,19 +5,18 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: production
     image: relevancy-system:latest
     container_name: relevancy-system
     restart: unless-stopped
     ports:
-      - "${APP_PORT:-8004}:8004"
+      - "${APP_PORT:-8006}:8006"
     environment:
       - APP_ENV=${APP_ENV:-production}
       - APP_HOST=0.0.0.0
-      - APP_PORT=8004
-      - APP_WORKERS=${APP_WORKERS:-4}
+      - PORT=8006
+      - APP_WORKERS=1
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8004/health')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8006/health')"]
       interval: 30s
       timeout: 10s
       retries: 3
